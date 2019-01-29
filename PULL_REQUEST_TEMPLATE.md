@@ -1,9 +1,16 @@
-#### Pivotal URL:
+## Type of change
+____  New feature
+____  Bug Fix
+____  Refactor
 
-#### What does this PR do?
+# Description
+[Summary of changes in your commits]
+closes #
 
-#### Where should the reviewer start?
+# Code Check
+- [ ] Implemented
 
-#### Any additional context you want to provide?
-
-#### Screenshots (if appropriate)
+# Functionality
+- [ ] This broke nothing
+- [ ] The code will run locally
+- [ ] There is no unused/commented out code
