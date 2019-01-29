@@ -54,10 +54,12 @@
 
 	var mealTable = new _meal_table2.default();
 
-	var section = document.getByClassName('tables');
-	var table = mealTable.make_table(section, "breakfast", 'mealTableItem');
-	var headers = ["Food", "Calories"];
-	mealTable.make_table_header(table, headers);
+	// let section = document.getElementById('tables')
+	// let table = mealTable.make_table(section, "breakfast", 'mealTableItem')
+	// let headers = ["Food", "Calories"]
+	// mealTable.make_table_headers(table, headers)
+
+	var container = mealTable.make_breakfast_table;
 
 /***/ }),
 /* 1 */
@@ -79,6 +81,34 @@
 	  }
 
 	  _createClass(MealTable, [{
+	    key: 'headers',
+	    value: function headers() {
+	      return ['Food', 'Calories'];
+	    }
+	  }, {
+	    key: 'make_breakfast_table',
+	    value: function make_breakfast_table() {
+	      var section = document.getElementById('tables');
+	      var container = make_table_container(section, "breakfastContainer");
+	      var table = make_table(container, 'breakfastTable');
+	      make_table_headers(table, headers());
+	      return container;
+	    }
+	  }, {
+	    key: 'make_table_container',
+	    value: function make_table_container(section) {
+	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'mealContainer';
+
+	      var container = document.createElement('span');
+	      container.className = className;
+	      if (id) {
+	        container.id = id;
+	      }
+	      section.appendChild(container);
+	      return container;
+	    }
+	  }, {
 	    key: 'make_table',
 	    value: function make_table(container) {
 	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -103,12 +133,6 @@
 	    value: function make_table_headers(table) {
 	      var headers = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-	      // `<tr>${
-	      //   let l = headers.length;
-	      //   for (let i = 0; i < l; i++) {
-	      //     `<th>${ headers[i] }<th>`
-	      //   }
-	      // }<tr>`
 	      var header = table.createTHead();
 	      var row = header.insertRow();
 	      var l = headers.length;
