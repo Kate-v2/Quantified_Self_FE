@@ -54,11 +54,6 @@
 
 	var mealTable = new _meal_table2.default();
 
-	// let section = document.getElementById('tables')
-	// let table = mealTable.make_table(section, "breakfast", 'mealTableItem')
-	// let headers = ["Food", "Calories"]
-	// mealTable.make_table_headers(table, headers)
-
 	var breakfast = mealTable.make_breakfast_table();
 	var lunch = mealTable.make_lunch_table();
 	var dinner = mealTable.make_dinner_table();
@@ -71,9 +66,88 @@
 	  "Orange": 110
 	};
 	mealTable.make_table_rows(table, data);
+	var more = { "Chocolate": 150 };
+	mealTable.make_table_row(table, more);
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _food_table = __webpack_require__(2);
+
+	var _food_table2 = _interopRequireDefault(_food_table);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var MealTable = function () {
+	  function MealTable() {
+	    _classCallCheck(this, MealTable);
+	  }
+
+	  _createClass(MealTable, [{
+	    key: 'make_breakfast_table',
+
+
+	    // ---- Methods for page use ----
+
+	    value: function make_breakfast_table() {
+	      var foodTable = new _food_table2.default('meal', 'Breakfast');
+	      var container = foodTable.make_specific_table();
+	      var table = document.getElementById('breakfastTable');
+	      return container;
+	    }
+	  }, {
+	    key: 'make_lunch_table',
+	    value: function make_lunch_table() {
+	      var foodTable = new _food_table2.default('meal', 'Lunch');
+	      var container = foodTable.make_specific_table();
+	      return container;
+	    }
+	  }, {
+	    key: 'make_dinner_table',
+	    value: function make_dinner_table() {
+	      var foodTable = new _food_table2.default('meal', 'Dinner');
+	      var container = foodTable.make_specific_table();
+	      return container;
+	    }
+	  }, {
+	    key: 'make_snack_table',
+	    value: function make_snack_table() {
+	      var foodTable = new _food_table2.default('meal', 'Snack');
+	      var container = foodTable.make_specific_table();
+	      return container;
+	    }
+	  }, {
+	    key: 'make_table_rows',
+	    value: function make_table_rows(table, data) {
+	      var foodTable = new _food_table2.default();
+	      foodTable.make_table_rows(table, data);
+	    }
+	  }, {
+	    key: 'make_table_row',
+	    value: function make_table_row(table, data) {
+	      var foodTable = new _food_table2.default();
+	      foodTable.make_table_row(table, data);
+	    }
+	  }]);
+
+	  return MealTable;
+	}();
+
+	exports.default = MealTable;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -84,74 +158,48 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	// TO DO - move most of this to a FoodTable class,
-	// - Use that class to build these custom tables
-	// - Add Calorie statistics to those tables in this class
+	var FoodTable = function () {
+	  function FoodTable() {
+	    var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'food';
+	    var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Food";
 
-	var MealTable = function () {
-	  function MealTable() {
-	    _classCallCheck(this, MealTable);
+	    _classCallCheck(this, FoodTable);
+
+	    this.type = type;
+	    this.title = title;
+	    this.name = title.toLowerCase();
 	  }
 
-	  _createClass(MealTable, [{
+	  _createClass(FoodTable, [{
 	    key: 'headers',
 	    value: function headers() {
 	      return ['Food', 'Calories'];
-	    }
-
-	    // ---- Methods for page use ----
-
-	  }, {
-	    key: 'make_breakfast_table',
-	    value: function make_breakfast_table() {
-	      var container = this.make_specific_table("Breakfast");
-	      var table = document.getElementById('breakfastTable');
-	      // this.make_table_row(table, {})
-	      return container;
-	    }
-	  }, {
-	    key: 'make_lunch_table',
-	    value: function make_lunch_table() {
-	      var container = this.make_specific_table("Lunch");
-	      return container;
-	    }
-	  }, {
-	    key: 'make_dinner_table',
-	    value: function make_dinner_table() {
-	      var container = this.make_specific_table("Dinner");
-	      return container;
-	    }
-	  }, {
-	    key: 'make_snack_table',
-	    value: function make_snack_table() {
-	      var container = this.make_specific_table("Snack");
-	      return container;
 	    }
 
 	    // ---- Table Container ------
 
 	  }, {
 	    key: 'make_specific_table',
-	    value: function make_specific_table(title) {
-	      var name = title.toLowerCase();
+	    value: function make_specific_table() {
 	      var section = document.getElementById('tables');
-	      var container = this.make_table_container(section, name + 'Container');
-	      this.addContainerTitle(container, title);
-	      var table = this.make_table(container, name + 'Table');
+	      var container = this.make_table_container(section, name);
+	      this.addContainerTitle(container);
+	      var table = this.make_table(container, this.name + 'Table');
 	      this.make_table_headers(table, this.headers());
-	      this.make_table_body();
+	      this.make_table_body(table);
 	      return container;
 	    }
 	  }, {
 	    key: 'make_table_container',
 	    value: function make_table_container(section) {
 	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'mealContainer';
 
 	      var container = document.createElement('span');
-	      container.className = className;
+	      container.className = this.type + 'Container';
 	      if (id) {
 	        container.id = id;
 	      }
@@ -160,11 +208,11 @@
 	    }
 	  }, {
 	    key: 'addContainerTitle',
-	    value: function addContainerTitle(container, title) {
-	      var text = document.createTextNode(title);
+	    value: function addContainerTitle(container) {
+	      var text = document.createTextNode(this.title);
 	      var p = document.createElement('p');
 	      p.appendChild(text);
-	      p.className = 'mealTableTitle';
+	      p.className = this.name + 'TableTitle';
 	      container.appendChild(p);
 	    }
 
@@ -174,10 +222,9 @@
 	    key: 'make_table',
 	    value: function make_table(container) {
 	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'mealTable';
 
 	      var table = document.createElement('table');
-	      table.className = className;
+	      table.className = this.type + 'Title';
 	      if (id) {
 	        table.id = id;
 	      }
@@ -207,31 +254,32 @@
 	    key: 'make_table_rows',
 	    value: function make_table_rows(table, data) {
 	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'mealTableItem';
 
 	      // TO DO - data will probably be an array of objects like:
 	      // { food: "Banana", calories: 100 }
 	      // If so, this method has to change!
 	      var body = table.children[1]; // || this.make_table_body(table)
 	      for (var key in data) {
-	        this.make_table_row(body, key, data[key]);
+	        var pair = _defineProperty({}, key, data[key]);
+	        this.make_table_row(body, pair);
 	      }
 	    }
 	  }, {
 	    key: 'make_table_row',
-	    value: function make_table_row(tbody, key, value, index) {
+	    value: function make_table_row(tbody, pair) {
 	      var row = tbody.insertRow();
 	      var cell1 = row.insertCell(0);
 	      var cell2 = row.insertCell(1);
+	      var key = Object.keys(pair)[0];
 	      cell1.innerHTML = key;
-	      cell2.innerHTML = value;
+	      cell2.innerHTML = pair[key];
 	    }
 	  }]);
 
-	  return MealTable;
+	  return FoodTable;
 	}();
 
-	exports.default = MealTable;
+	exports.default = FoodTable;
 
 /***/ })
 /******/ ]);
