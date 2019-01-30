@@ -88,10 +88,22 @@
 	  }, {
 	    key: 'make_breakfast_table',
 	    value: function make_breakfast_table() {
+	      // let section   = document.getElementById('tables')
+	      // let container = this.make_table_container(section, "breakfastContainer")
+	      // this.addContainerTitle(container, "Breakfast")
+	      // let table = this.make_table(container, 'breakfastTable')
+	      // this.make_table_headers(table, this.headers())
+	      // return container
+	      this.make_specific_table("Breakfast");
+	    }
+	  }, {
+	    key: 'make_specific_table',
+	    value: function make_specific_table(title) {
+	      var name = title.toLowerCase();
 	      var section = document.getElementById('tables');
-	      var container = this.make_table_container(section, "breakfastContainer");
-	      this.addContainerTitle(container, "Breakfast");
-	      var table = this.make_table(container, 'breakfastTable');
+	      var container = this.make_table_container(section, name + 'Container');
+	      this.addContainerTitle(container, title);
+	      var table = this.make_table(container, name + 'Table');
 	      this.make_table_headers(table, this.headers());
 	      return container;
 	    }
@@ -110,6 +122,15 @@
 	      return container;
 	    }
 	  }, {
+	    key: 'addContainerTitle',
+	    value: function addContainerTitle(container, title) {
+	      var text = document.createTextNode(title);
+	      var p = document.createElement('p');
+	      p.appendChild(text);
+	      p.className = 'mealTableTitle';
+	      container.appendChild(p);
+	    }
+	  }, {
 	    key: 'make_table',
 	    value: function make_table(container) {
 	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -122,12 +143,6 @@
 	      }
 	      container.appendChild(table);
 	      return table;
-	    }
-	  }, {
-	    key: 'make_table_row',
-	    value: function make_table_row(table) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'mealTableItem';
 	    }
 	  }, {
 	    key: 'make_table_headers',
@@ -143,13 +158,10 @@
 	      }
 	    }
 	  }, {
-	    key: 'addContainerTitle',
-	    value: function addContainerTitle(container, title) {
-	      var text = document.createTextNode(title);
-	      var p = document.createElement('p');
-	      p.appendChild(text);
-	      p.className = 'mealTableTitle';
-	      container.appendChild(p);
+	    key: 'make_table_row',
+	    value: function make_table_row(table) {
+	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'mealTableItem';
 	    }
 	  }]);
 
