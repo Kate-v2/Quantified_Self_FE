@@ -59,7 +59,7 @@
 	// let headers = ["Food", "Calories"]
 	// mealTable.make_table_headers(table, headers)
 
-	var container = mealTable.make_breakfast_table;
+	var container = mealTable.make_breakfast_table();
 
 /***/ }),
 /* 1 */
@@ -89,9 +89,10 @@
 	    key: 'make_breakfast_table',
 	    value: function make_breakfast_table() {
 	      var section = document.getElementById('tables');
-	      var container = make_table_container(section, "breakfastContainer");
-	      var table = make_table(container, 'breakfastTable');
-	      make_table_headers(table, headers());
+	      var container = this.make_table_container(section, "breakfastContainer");
+	      this.addContainerTitle(container, "Breakfast");
+	      var table = this.make_table(container, 'breakfastTable');
+	      this.make_table_headers(table, this.headers());
 	      return container;
 	    }
 	  }, {
@@ -140,6 +141,15 @@
 	        var cell = row.insertCell(i);
 	        cell.innerHTML = headers[i];
 	      }
+	    }
+	  }, {
+	    key: 'addContainerTitle',
+	    value: function addContainerTitle(container, title) {
+	      var text = document.createTextNode(title);
+	      var p = document.createElement('p');
+	      p.appendChild(text);
+	      p.className = 'mealTableTitle';
+	      container.appendChild(p);
 	    }
 	  }]);
 
