@@ -1,75 +1,47 @@
 # Quantified Self Front-end
 
-## Initial Setup
+## Intro
+An app to set calorie goals for the day, via goals for each meal, and track what you ate for each meal!
 
-1. Clone this starter kit repository and rename the repository to `quantified-self-fe` in one command
+* [Deployed App] ()
+* [Deployed API] ()
+* [API Repo](https://github.com/RajaaBoulassouak/Quantified_Self_BE)
 
-  ```shell
-  git clone git@github.com:turingschool-examples/qs-fe-starter-kit.git quantified-self-fe
-  ```
-2. Change into the `quantified-self-fe` directory
+## Setup
+1. Fork or clone this repo: `git clone git@github.com:Kate-v2/Quantified_Self_FE.git <name of your choice>`
+1. Install Dependencies: `npm install`
+1. To see the app in action locally: `npm start`
+1. Go to: `http://localhost:8080/`
 
-3. Remove the default remote (origin)
+## How to Use
+This app obtains/submits data through the [Quantified Self API] () ([repo](https://github.com/RajaaBoulassouak/Quantified_Self_BE)). Currently, this is a one page website, utilizing Javascript for all interactions to change displays and make HTTP GET/POST/DELETE requests from the API.
 
-  ```shell
-  git remote rm origin
-  ```
+A user can register/login and will have the ability to save foods, and meals composed of food, as well as set calorie goals for each meal & the day.
 
-4. Create a new repository on GitHub named `quantified-self-fe`
+Overall, this is a simple calorie tracker app that can be expanded for your purposes.
 
-5. Add your new repository remote - **your remote URL and user name will be different in the command below**
+## Known Issues
+* Dependency: gyp / node-gyp may cause errors; if encountered run `npm audit fix`.
 
-  ```shell
-  git remote add origin git@github.com:<YOUR GITHUB NAME>/quantified-self-fe.git
-  ```
+## Running Tests
+* There are no tests currently
 
-6. Install the dependencies of the starter kit
+## How to Contribute
+To contribute, see the setup instructions.
+* [Open Issues](https://github.com/Kate-v2/Quantified_Self_FE/projects/1)
+* Create a new branch describing the feature. If you close an issue, include it's number in the branch name.
+* Please describe all changes in the Pull Request (to `Master`), and all relative issue cards/actions.
+* Please use the Pull Request Template as the baseline for communication - feel free to add more!
+* Please update the `README` if anything is affected.
+* Deployment is not from the Master branch, but rather the `gh-pages` branch.
 
-  ```shell
-  npm install
-  ```
+#### Core Unfinished Features
 
-7. Add, commit, and push up to your repository
+## Core Contributors
+* [Kate](https://github.com/Kate-v2)
+* [Rajaa](https://github.com/RajaaBoulassouak)
 
-  ```shell
-  git add .
-  git commit -m "Initial commit using starter kit"
-  git push origin master
-  ```
-
-## Running the Server Locally
-
-To see your code in action locally, you need to fire up a development server. Use the command:
-
-```shell
-npm start
-```
-
-Once the server is running, visit in your browser:
-
-* `http://localhost:8080/` to run your application.
-
-You will need to make sure that your Quantified Self API is also running at `http://localhost:3000`
-
-## GitHub Pages Setup
-
-This site will be served from GitHub Pages in production.
-
-In order to see your application running on production:
-
-1. From the command line, run `npm run build`.
-
-2. Commit and push your application to GitHub.
-
-3. Visit your repository on Github
-
-4. Go to Settings
-
-5. Under the Github Pages section of Options, select 'master' as your source and click `Save`
-
-Be sure to `npm run build` and commit before each push to master. A few seconds after you push up, you should be able to see your application at <https://your-github-username.github.io/quantified-self-fe>.
-
-## Built With
+## Technical
 
 * [JavaScript](https://www.javascript.com/)
 * [jQuery](https://jquery.com/)
@@ -77,3 +49,7 @@ Be sure to `npm run build` and commit before each push to master. A few seconds 
 * [Mocha](https://mochajs.org/)
 * [Chai](https://chaijs.com/)
 
+
+## Turing Project Details:
+* [Assignment](http://backend.turing.io/module4/projects/quantified_self/quantified_self_full_stack)
+* [Rubric](http://backend.turing.io/module4/projects/quantified_self/rubric)
