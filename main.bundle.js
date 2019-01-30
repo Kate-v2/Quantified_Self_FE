@@ -65,13 +65,12 @@
 	var snack = mealTable.make_snack_table();
 
 	var table = document.getElementById('breakfastTable');
-	// let data = { "Banana": 100 }
 	var data = {
 	  "Banana": 100,
 	  "Apple": 120,
 	  "Orange": 110
 	};
-	mealTable.make_table_row(table, data);
+	mealTable.make_table_rows(table, data);
 
 /***/ }),
 /* 1 */
@@ -192,9 +191,9 @@
 	      var header = table.createTHead();
 	      var row = header.insertRow();
 	      var l = headers.length;
-	      for (var i = 0; i < l; i++) {
-	        var cell = row.insertCell(i);
-	        cell.innerHTML = headers[i];
+	      for (var _i = 0; _i < l; _i++) {
+	        var cell = row.insertCell(_i);
+	        cell.innerHTML = headers[_i];
 	      }
 	    }
 	  }, {
@@ -204,8 +203,8 @@
 	      return body;
 	    }
 	  }, {
-	    key: 'make_table_row',
-	    value: function make_table_row(table, data) {
+	    key: 'make_table_rows',
+	    value: function make_table_rows(table, data) {
 	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'mealTableItem';
 
@@ -215,12 +214,22 @@
 	      var body = table.children[1] || this.make_table_body(table);
 	      var i = 0;
 	      for (var key in data) {
-	        var row = body.insertRow(i);
-	        var cell1 = row.insertCell(0);
-	        var cell2 = row.insertCell(1);
-	        cell1.innerHTML = key;
-	        cell2.innerHTML = data[key];
+	        // let row   = body.insertRow(i)
+	        // let cell1 = row.insertCell(0)
+	        // let cell2 = row.insertCell(1)
+	        // cell1.innerHTML = key
+	        // cell2.innerHTML = data[key]
+	        make_table_row(body, key, data[key]);
 	      }
+	    }
+	  }, {
+	    key: 'make_table_row',
+	    value: function make_table_row(tbody, key, value) {
+	      var row = tbody.insertRow(i);
+	      var cell1 = row.insertCell(0);
+	      var cell2 = row.insertCell(1);
+	      cell1.innerHTML = key;
+	      cell2.innerHTML = value;
 	    }
 	  }]);
 
