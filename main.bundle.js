@@ -79,15 +79,25 @@
 	//  API REQUEST HERE
 	// --> do the following
 
-	var table1 = document.getElementById('breakfastTable');
-	var tbody1 = table1.children[1];
+	var br = document.getElementById('breakfastTable');
+	var tbody1 = br.children[1];
 
 	mealTable.make_table_rows(tbody1, data);
 	mealTable.make_table_row(tbody1, more);
 
+	mealTable.make_table_goal(br, 500, 'breakfast', 'meal');
 	mealTable.make_breakfast_stats();
+
+	var l = document.getElementById('lunchTable');
+	mealTable.make_table_goal(l, 500, 'lunch', 'meal');
 	mealTable.make_lunch_stats();
+
+	var d = document.getElementById('dinnerTable');
+	mealTable.make_table_goal(d, 500, 'dinner', 'meal');
 	mealTable.make_dinner_stats();
+
+	var s = document.getElementById('snackTable');
+	mealTable.make_table_goal(s, 500, 'snack', 'meal');
 	mealTable.make_snack_stats();
 
 	// ---- Food Experiment ---
@@ -186,6 +196,23 @@
 	    value: function make_table_row(table, data) {
 	      var foodTable = new _food_table2.default('meal', "Meal");
 	      foodTable.make_table_row(table, data);
+	    }
+	  }, {
+	    key: 'make_table_goal',
+	    value: function make_table_goal(table, goal) {
+	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	      var header = table.children[0];
+	      var col_header = header.children[0];
+	      var row = document.createElement('tr');
+	      row.id = id + 'Goal';
+	      row.className = className + 'Goal';
+	      header.prepend(row, col_header);
+	      var cell1 = row.insertCell();
+	      cell1.innerHTML = 'Target Calories';
+	      var cell2 = row.insertCell();
+	      cell2.innerHTML = goal;
 	    }
 
 	    // ---- Statistics ----
