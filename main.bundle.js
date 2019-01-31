@@ -50,10 +50,6 @@
 
 	var _meal_table2 = _interopRequireDefault(_meal_table);
 
-	var _table_statistics = __webpack_require__(4);
-
-	var _table_statistics2 = _interopRequireDefault(_table_statistics);
-
 	var _food_table = __webpack_require__(2);
 
 	var _food_table2 = _interopRequireDefault(_food_table);
@@ -86,14 +82,18 @@
 	mealTable.make_table_rows(tbody1, data);
 	mealTable.make_table_row(tbody1, more);
 
-	var stats = new _table_statistics2.default();
+	mealTable.make_breakfast_stats();
+	mealTable.make_lunch_stats();
+	mealTable.make_dinner_stats();
+	mealTable.make_snack_stats();
 
-	var sum = stats.sum_table_body_rows(tbody1, 1);
-	var statbody = stats.add_statistics_table_body(table1, 'breakfast', 'meal');
-	var statData = { "Total Calories": sum };
-	var sumRow = stats.add_statistics_table_row(statbody, statData, 'breakfast', 'meal');
-	// let row = mealTable.make_table_row(statbody, { "Total Calories": sum  } )
-	// TO DO - rename row
+	// import TableStatistics from './classes/table_statistics.js'
+	// const stats = new TableStatistics
+	//
+	// let sum      = stats.sum_table_body_rows(tbody1, 1)
+	// let statbody = stats.add_statistics_table_body(table1, 'breakfast', 'meal')
+	// let statData  = { "Total Calories": sum  }
+	// let sumRow   = stats.add_statistics_table_row(statbody, statData, 'breakfast', 'meal')
 
 
 	// ---- Food Experiment ---
@@ -121,6 +121,10 @@
 
 	var _food_table2 = _interopRequireDefault(_food_table);
 
+	var _table_statistics = __webpack_require__(4);
+
+	var _table_statistics2 = _interopRequireDefault(_table_statistics);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -128,18 +132,17 @@
 	var MealTable = function () {
 	  function MealTable() {
 	    _classCallCheck(this, MealTable);
+
+	    this.stats = new _table_statistics2.default();
 	  }
+
+	  // ---- Methods for page use ----
 
 	  _createClass(MealTable, [{
 	    key: 'make_breakfast_table',
-
-
-	    // ---- Methods for page use ----
-
 	    value: function make_breakfast_table(base_element) {
 	      var foodTable = new _food_table2.default('meal', 'Breakfast');
 	      var container = foodTable.make_specific_table(base_element);
-	      // let table = document.getElementById('breakfastTable')
 	      return container;
 	    }
 	  }, {
@@ -163,6 +166,9 @@
 	      var container = foodTable.make_specific_table(base_element);
 	      return container;
 	    }
+
+	    // ---- Table Builder ----
+
 	  }, {
 	    key: 'make_table_rows',
 	    value: function make_table_rows(table, data) {
@@ -174,6 +180,52 @@
 	    value: function make_table_row(table, data) {
 	      var foodTable = new _food_table2.default('meal', "Meal");
 	      foodTable.make_table_row(table, data);
+	    }
+
+	    // ---- Statistics ----
+
+	  }, {
+	    key: 'make_breakfast_stats',
+	    value: function make_breakfast_stats() {
+	      var stats = this.make_stats_section('meal', 'breakfast');
+	      return stats;
+	    }
+	  }, {
+	    key: 'make_lunch_stats',
+	    value: function make_lunch_stats() {
+	      var stats = this.make_stats_section('meal', 'lunch');
+	      return stats;
+	    }
+	  }, {
+	    key: 'make_lunch_stats',
+	    value: function make_lunch_stats() {
+	      var stats = this.make_stats_section('meal', 'dinner');
+	      return stats;
+	    }
+	  }, {
+	    key: 'make_lunch_stats',
+	    value: function make_lunch_stats() {
+	      var stats = this.make_stats_section('meal', 'snack');
+	      return stats;
+	    }
+	  }, {
+	    key: 'make_stats_section',
+	    value: function make_stats_section(className, id) {
+	      var table = document.getElementById(id + 'Table');
+	      var tbody = table.children[1];
+	      var sum = this.stats.sum_table_body_rows(tbody, 1);
+	      var statsBody = this.stats.add_statistics_table_body(table, id, className);
+	      var sumRow = this.make_calorie_total(stats, id, className);
+	      return statsBody;
+	    }
+	  }, {
+	    key: 'make_calorie_total',
+	    value: function make_calorie_total(statBody, total) {
+	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	      var data = { "Total Calories": total };
+	      var sum = this.stats.add_statistics_table_row(statBody, data, id, className);
 	    }
 	  }]);
 
@@ -501,17 +553,16 @@
 	  _createClass(TableStatistics, [{
 	    key: 'cell_value',
 	    value: function cell_value(cell) {
-	      return parseInt(cell.innerText);
+	      return parseInt(cell.innerText) || 0;
 	    }
 
 	    // ---- Calculator ----
 
+	    // sum_table_body_rows(tbody, col_index, id=null, className=null) {
+
 	  }, {
 	    key: 'sum_table_body_rows',
 	    value: function sum_table_body_rows(tbody, col_index) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
 	      var rows = tbody.children;
 	      var l = rows.length;
 	      var sum = 0;
@@ -533,7 +584,7 @@
 	      var body = table.createTBody();
 	      var name = className ? className + 'Statistics' : null;
 	      var iden = id ? id + 'Statistics' : null;
-	      this.table.name_element(body, id, name);
+	      this.table.name_element(body, iden, name);
 	      return body;
 	    }
 	  }, {
@@ -546,7 +597,7 @@
 	      var row = tbody.insertRow();
 	      var name = className ? className + 'Calculation' : null;
 	      var iden = id ? id + 'Calculation' : null;
-	      this.table.name_element(row, id, name);
+	      this.table.name_element(row, iden, name);
 	      if (data) {
 	        this.table.fill_two_cell_row(row, data);
 	      }
