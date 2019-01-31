@@ -212,6 +212,8 @@
 	      var cell1 = row.insertCell();
 	      cell1.innerHTML = 'Target Calories';
 	      var cell2 = row.insertCell();
+	      cell2.id = id + 'GoalCell';
+	      cell2.className = className + 'GoalCell';
 	      cell2.innerHTML = goal;
 	    }
 
@@ -249,6 +251,7 @@
 	      var sum = this.stats.sum_table_body_rows(tbody, 1);
 	      var statsBody = this.stats.add_statistics_table_body(table, id, className);
 	      var sumRow = this.make_calorie_total(statsBody, sum, id, className);
+	      var resultRow = this.make_goal_total_row(sumRow, className, id);
 	      return statsBody;
 	    }
 	  }, {
@@ -259,12 +262,41 @@
 
 	      var data = { "Total Calories": total };
 	      var sum = this.stats.add_statistics_table_row(statBody, data, id, className);
+	      return sum;
 	    }
 	  }, {
-	    key: 'make_goal_total',
-	    value: function make_goal_total() {
-	      // if value is negative, cell.className = 'negative'
+	    key: 'make_goal_total_row',
+	    value: function make_goal_total_row(sumRow, className, id) {
+
+	      // TO DO - REFACTOR!
+	      // CELLS should have names for easy access
+
+	      var goal = this.stats.cell_value(document.getElementById(id + 'GoalCell'));
+	      var calories = this.stats.cell_value(sumRow.children[1]);
+	      var result = goal - calories || 0;
+	      var stats = document.getElementById(id + 'Statistics');
+	      var row = stats.insertRow();
+	      var cell1 = row.insertCell();
+	      cell1.innerHTML = "Remaining Calories";
+	      var cell2 = row.insertCell();
+	      cell2.innerHTML = result;
+	      cell2.id = id + 'CalorieResult';
+	      cell2.className = className + 'CalorieResult';
+	      if (result < 0) {
+	        cell2.className = 'negative';
+	      }
+	      return row;
 	    }
+
+	    // TO DO - Logic for daily goal
+	    // let mealGoals = document.getElementsByClassName('mealGoalCell')
+	    // let l = mealGoals.length
+	    // let sum = 0
+	    // for(let i=0; i < l; i++) {
+	    //   sum += this.stats.cell_value(mealGoals[i])
+	    // }
+
+
 	  }]);
 
 	  return MealTable;
