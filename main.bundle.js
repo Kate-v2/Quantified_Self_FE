@@ -76,6 +76,9 @@
 	var dinner = mealTable.make_dinner_table(base_element);
 	var snack = mealTable.make_snack_table(base_element);
 
+	//  API REQUEST HERE
+	// --> do the following
+
 	var table1 = document.getElementById('breakfastTable');
 	var tbody1 = table1.children[1];
 
@@ -86,15 +89,6 @@
 	mealTable.make_lunch_stats();
 	mealTable.make_dinner_stats();
 	mealTable.make_snack_stats();
-
-	// import TableStatistics from './classes/table_statistics.js'
-	// const stats = new TableStatistics
-	//
-	// let sum      = stats.sum_table_body_rows(tbody1, 1)
-	// let statbody = stats.add_statistics_table_body(table1, 'breakfast', 'meal')
-	// let statData  = { "Total Calories": sum  }
-	// let sumRow   = stats.add_statistics_table_row(statbody, statData, 'breakfast', 'meal')
-
 
 	// ---- Food Experiment ---
 
@@ -130,6 +124,18 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var MealTable = function () {
+
+	  // TO DO - reduce this class by instantiating it as
+	  // a Breakfast / Lunch / Dinner / Snack object
+	  //  - make attributes for class, id & title
+	  //  - single method for make_meal_table
+	  //  - single method for make_stats
+
+	  // TO DO - reduce dependencies !!!
+
+	  // TO DO - give tbody for table data an id & class
+	  // --> easier to snag
+	  // --> reduce hardcoded array index
 	  function MealTable() {
 	    _classCallCheck(this, MealTable);
 
@@ -197,14 +203,14 @@
 	      return stats;
 	    }
 	  }, {
-	    key: 'make_lunch_stats',
-	    value: function make_lunch_stats() {
+	    key: 'make_dinner_stats',
+	    value: function make_dinner_stats() {
 	      var stats = this.make_stats_section('meal', 'dinner');
 	      return stats;
 	    }
 	  }, {
-	    key: 'make_lunch_stats',
-	    value: function make_lunch_stats() {
+	    key: 'make_snack_stats',
+	    value: function make_snack_stats() {
 	      var stats = this.make_stats_section('meal', 'snack');
 	      return stats;
 	    }
@@ -215,7 +221,7 @@
 	      var tbody = table.children[1];
 	      var sum = this.stats.sum_table_body_rows(tbody, 1);
 	      var statsBody = this.stats.add_statistics_table_body(table, id, className);
-	      var sumRow = this.make_calorie_total(stats, id, className);
+	      var sumRow = this.make_calorie_total(statsBody, sum, id, className);
 	      return statsBody;
 	    }
 	  }, {
@@ -226,6 +232,11 @@
 
 	      var data = { "Total Calories": total };
 	      var sum = this.stats.add_statistics_table_row(statBody, data, id, className);
+	    }
+	  }, {
+	    key: 'make_goal_total',
+	    value: function make_goal_total() {
+	      // if value is negative, cell.className = 'negative'
 	    }
 	  }]);
 
