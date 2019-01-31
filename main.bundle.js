@@ -63,6 +63,7 @@
 	};
 
 	var more = { "Chocolate": 150 };
+	var extra = { 'Grapes': 200 };
 
 	var base_element = document.getElementById('content');
 	base_element.innerHTML = '';
@@ -84,11 +85,14 @@
 
 	mealTable.make_table_rows(tbody1, data);
 	mealTable.make_table_row(tbody1, more);
+	mealTable.make_table_row(tbody1, extra);
 
 	mealTable.make_table_goal(br, 500, 'breakfast', 'meal');
 	mealTable.make_breakfast_stats();
 
 	var l = document.getElementById('lunchTable');
+	var tbody2 = l.children[1];
+	mealTable.make_table_rows(tbody2, data);
 	mealTable.make_table_goal(l, 500, 'lunch', 'meal');
 	mealTable.make_lunch_stats();
 
@@ -283,7 +287,7 @@
 	      cell2.id = id + 'CalorieResult';
 	      cell2.className = className + 'CalorieResult';
 	      if (result < 0) {
-	        cell2.className = 'negative';
+	        cell2.classList.add('negative');
 	      }
 	      return row;
 	    }
