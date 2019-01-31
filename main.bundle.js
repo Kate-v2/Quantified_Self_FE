@@ -90,8 +90,9 @@
 
 	var sum = stats.sum_table_body_rows(tbody1, 1);
 	var statbody = stats.add_statistics_table_body(table1, 'breakfast', 'meal');
-
-	var row = mealTable.make_table_row(statbody, { "Total Calories": sum });
+	var statData = { "Total Calories": sum };
+	var sumRow = stats.add_statistics_table_row(statbody, statData, 'breakfast', 'meal');
+	// let row = mealTable.make_table_row(statbody, { "Total Calories": sum  } )
 	// TO DO - rename row
 
 
@@ -465,9 +466,9 @@
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -475,38 +476,38 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _table_builder = __webpack_require__(3);
+
+	var _table_builder2 = _interopRequireDefault(_table_builder);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var TableStatistics = function () {
 	  function TableStatistics() {
 	    _classCallCheck(this, TableStatistics);
 
-	    this.tables = [];
+	    // this.tables = []
+	    this.table = new _table_builder2.default();
 	  }
 
 	  // ---- Tools ----
 
+	  // clear_tables() {
+	  //   this.tables = []
+	  // }
+
 	  _createClass(TableStatistics, [{
-	    key: "clear_tables",
-	    value: function clear_tables() {
-	      this.tables = [];
-	    }
-	  }, {
-	    key: "name_element",
-	    value: function name_element(element, id, className) {
-	      if (id) {
-	        element.id = id;
-	      }
-	      if (className) {
-	        element.className = className;
-	      }
-	      return element;
+	    key: 'cell_value',
+	    value: function cell_value(cell) {
+	      return parseInt(cell.innerText);
 	    }
 
 	    // ---- Calculator ----
 
 	  }, {
-	    key: "sum_table_body_rows",
+	    key: 'sum_table_body_rows',
 	    value: function sum_table_body_rows(tbody, col_index) {
 	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
@@ -520,29 +521,37 @@
 	      }
 	      return sum;
 	    }
-	  }, {
-	    key: "cell_value",
-	    value: function cell_value(cell) {
-	      return parseInt(cell.innerText);
-	    }
 
 	    // ---- Table Builder ----
 
 	  }, {
-	    key: "add_statistics_table_body",
+	    key: 'add_statistics_table_body',
 	    value: function add_statistics_table_body(table) {
 	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
 	      var body = table.createTBody();
-	      var name = className ? className + "Statistics" : null;
-	      var iden = id ? id + "Statistics" : null;
-	      this.name_element(body, id, name);
+	      var name = className ? className + 'Statistics' : null;
+	      var iden = id ? id + 'Statistics' : null;
+	      this.table.name_element(body, id, name);
 	      return body;
 	    }
 	  }, {
-	    key: "add_statistics_table_row",
-	    value: function add_statistics_table_row() {}
+	    key: 'add_statistics_table_row',
+	    value: function add_statistics_table_row(tbody, data) {
+	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	      // LIMITATION - this can only hand a row with 2 columns
+	      var row = tbody.insertRow();
+	      var name = className ? className + 'Calculation' : null;
+	      var iden = id ? id + 'Calculation' : null;
+	      this.table.name_element(row, id, name);
+	      if (data) {
+	        this.table.fill_two_cell_row(row, data);
+	      }
+	      return row;
+	    }
 	  }]);
 
 	  return TableStatistics;
