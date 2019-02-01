@@ -70,48 +70,42 @@
 
 	// ---- Meal Experiment ---
 
-	var mealTable = new _meal_table2.default();
-
-	var breakfast = mealTable.make_breakfast_table(base_element);
-	var lunch = mealTable.make_lunch_table(base_element);
-	var dinner = mealTable.make_dinner_table(base_element);
-	var snack = mealTable.make_snack_table(base_element);
-
+	var breakfastBuilder = new _meal_table2.default('breakfast');
+	var breakfastTable = breakfastBuilder.make_meal_table(base_element);
 	//  API REQUEST HERE
-	// --> do the following
+	breakfastBuilder.make_table_rows(data);
+	breakfastBuilder.make_table_row(more);
+	breakfastBuilder.make_table_row(extra);
+	breakfastBuilder.make_table_goal(500);
+	breakfastBuilder.make_stats_section();
 
-	var br = document.getElementById('breakfastTable');
-	var tbody1 = br.children[1];
+	var lunchBuilder = new _meal_table2.default('lunch');
+	var lunchTable = lunchBuilder.make_meal_table(base_element);
+	//  API REQUEST HERE
+	lunchBuilder.make_table_rows(data);
+	lunchBuilder.make_table_row(more);
+	lunchBuilder.make_table_goal(500);
+	lunchBuilder.make_stats_section();
 
-	mealTable.make_table_rows(tbody1, data);
-	mealTable.make_table_row(tbody1, more);
-	mealTable.make_table_row(tbody1, extra);
+	var dinnerBuilder = new _meal_table2.default('dinner');
+	var dinnerTable = dinnerBuilder.make_meal_table(base_element);
+	//  API REQUEST HERE
+	dinnerBuilder.make_table_goal(500);
+	dinnerBuilder.make_stats_section();
 
-	mealTable.make_table_goal(br, 500, 'breakfast', 'meal');
-	mealTable.make_breakfast_stats();
+	var snackBuilder = new _meal_table2.default('snack');
+	var snackTable = snackBuilder.make_meal_table(base_element);
+	//  API REQUEST HERE
+	snackBuilder.make_table_row({ 'snack': 500 });
+	snackBuilder.make_table_goal(500);
+	snackBuilder.make_stats_section();
 
-	var l = document.getElementById('lunchTable');
-	var tbody2 = l.children[1];
-	mealTable.make_table_rows(tbody2, data);
-	mealTable.make_table_goal(l, 500, 'lunch', 'meal');
-	mealTable.make_lunch_stats();
-
-	var d = document.getElementById('dinnerTable');
-	mealTable.make_table_goal(d, 500, 'dinner', 'meal');
-	mealTable.make_dinner_stats();
-
-	var s = document.getElementById('snackTable');
-	mealTable.make_table_goal(s, 500, 'snack', 'meal');
-	mealTable.make_snack_stats();
-
-	// ---- Food Experiment ---
+	// ---- Food ----
 
 	var foodTable = new _food_table2.default();
-
 	var container = foodTable.make_specific_table(base_element);
-	var table2 = document.getElementById('foodTable').children[1];
-	foodTable.make_table_rows(table2, data);
-	foodTable.make_table_row(table2, more);
+	foodTable.make_table_rows(data);
+	foodTable.make_table_row(more);
 
 /***/ }),
 /* 1 */
@@ -138,158 +132,147 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var MealTable = function () {
+	  function MealTable(id) {
+	    var className = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "meal";
 
-	  // TO DO - reduce this class by instantiating it as
-	  // a Breakfast / Lunch / Dinner / Snack object
-	  //  - make attributes for class, id & title
-	  //  - single method for make_meal_table
-	  //  - single method for make_stats
-
-	  // TO DO - reduce dependencies !!!
-
-	  // TO DO - give tbody for table data an id & class
-	  // --> easier to snag
-	  // --> reduce hardcoded array index
-	  function MealTable() {
 	    _classCallCheck(this, MealTable);
 
-	    this.stats = new _table_statistics2.default();
+	    this.idBase = id;
+	    this.className = className;
+	    this.foodTable = new _food_table2.default(this.className, this.title(this.idBase));
+	    this.stats = new _table_statistics2.default(this.idBase, this.className);
 	  }
 
-	  // ---- Methods for page use ----
-
 	  _createClass(MealTable, [{
-	    key: 'make_breakfast_table',
-	    value: function make_breakfast_table(base_element) {
-	      var foodTable = new _food_table2.default('meal', 'Breakfast');
-	      var container = foodTable.make_specific_table(base_element);
-	      return container;
+	    key: 'title',
+	    value: function title(word) {
+	      return word.charAt(0).toUpperCase() + word.slice(1);
 	    }
 	  }, {
-	    key: 'make_lunch_table',
-	    value: function make_lunch_table(base_element) {
-	      var foodTable = new _food_table2.default('meal', 'Lunch');
-	      var container = foodTable.make_specific_table(base_element);
-	      return container;
+	    key: 'table',
+	    value: function table() {
+	      return document.getElementById(this.idBase + 'Table');
 	    }
 	  }, {
-	    key: 'make_dinner_table',
-	    value: function make_dinner_table(base_element) {
-	      var foodTable = new _food_table2.default('meal', 'Dinner');
-	      var container = foodTable.make_specific_table(base_element);
-	      return container;
+	    key: 'data_rows',
+	    value: function data_rows() {
+	      return document.getElementById(this.idBase + 'TBody');
 	    }
 	  }, {
-	    key: 'make_snack_table',
-	    value: function make_snack_table(base_element) {
-	      var foodTable = new _food_table2.default('meal', 'Snack');
-	      var container = foodTable.make_specific_table(base_element);
+	    key: 'stats_section',
+	    value: function stats_section() {
+	      return document.getElementById(this.idBase + 'Statistics');
+	    }
+	  }, {
+	    key: 'header_section',
+	    value: function header_section() {
+	      return document.getElementById(this.idBase + 'Header');
+	    }
+
+	    // ---- Section Builder ----
+
+	  }, {
+	    key: 'make_meal_table',
+	    value: function make_meal_table(base_element) {
+	      var container = this.foodTable.make_specific_table(base_element);
 	      return container;
+	    }
+
+	    // ---- Add Data ----
+
+	  }, {
+	    key: 'make_table_rows',
+	    value: function make_table_rows(data) {
+	      this.foodTable.make_table_rows(data);
+	    }
+	  }, {
+	    key: 'make_table_row',
+	    value: function make_table_row(data) {
+	      var body = this.data_rows();
+	      this.foodTable.make_table_row(data);
 	    }
 
 	    // ---- Table Builder ----
 
 	  }, {
-	    key: 'make_table_rows',
-	    value: function make_table_rows(table, data) {
-	      var foodTable = new _food_table2.default('meal', "Meal");
-	      foodTable.make_table_rows(table, data);
-	    }
-	  }, {
-	    key: 'make_table_row',
-	    value: function make_table_row(table, data) {
-	      var foodTable = new _food_table2.default('meal', "Meal");
-	      foodTable.make_table_row(table, data);
-	    }
-	  }, {
 	    key: 'make_table_goal',
-	    value: function make_table_goal(table, goal) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
-	      var header = table.children[0];
-	      var col_header = header.children[0];
-	      var row = document.createElement('tr');
-	      row.id = id + 'Goal';
-	      row.className = className + 'Goal';
-	      header.prepend(row, col_header);
+	    value: function make_table_goal(goal) {
+	      var row = this.make_goal_row();
 	      var cell1 = row.insertCell();
 	      cell1.innerHTML = 'Target Calories';
 	      var cell2 = row.insertCell();
-	      cell2.id = id + 'GoalCell';
-	      cell2.className = className + 'GoalCell';
+	      this.stats.name_element(cell2, "GoalCell");
 	      cell2.innerHTML = goal;
+	      return cell2;
+	    }
+	  }, {
+	    key: 'make_goal_row',
+	    value: function make_goal_row() {
+	      var header = this.header_section();
+	      var col_header = header.children[0];
+	      var row = document.createElement('tr');
+	      this.stats.name_element(row, "Goal");
+	      header.prepend(row, col_header);
+	      return row;
 	    }
 
 	    // ---- Statistics ----
 
 	  }, {
-	    key: 'make_breakfast_stats',
-	    value: function make_breakfast_stats() {
-	      var stats = this.make_stats_section('meal', 'breakfast');
-	      return stats;
-	    }
-	  }, {
-	    key: 'make_lunch_stats',
-	    value: function make_lunch_stats() {
-	      var stats = this.make_stats_section('meal', 'lunch');
-	      return stats;
-	    }
-	  }, {
-	    key: 'make_dinner_stats',
-	    value: function make_dinner_stats() {
-	      var stats = this.make_stats_section('meal', 'dinner');
-	      return stats;
-	    }
-	  }, {
-	    key: 'make_snack_stats',
-	    value: function make_snack_stats() {
-	      var stats = this.make_stats_section('meal', 'snack');
-	      return stats;
-	    }
-	  }, {
 	    key: 'make_stats_section',
-	    value: function make_stats_section(className, id) {
-	      var table = document.getElementById(id + 'Table');
-	      var tbody = table.children[1];
+	    value: function make_stats_section() {
+	      var table = this.table();
+	      var tbody = this.data_rows();
 	      var sum = this.stats.sum_table_body_rows(tbody, 1);
-	      var statsBody = this.stats.add_statistics_table_body(table, id, className);
-	      var sumRow = this.make_calorie_total(statsBody, sum, id, className);
-	      var resultRow = this.make_goal_total_row(sumRow, className, id);
+	      var statsBody = this.stats.add_statistics_table_body(table);
+	      var sumRow = this.make_calorie_total(sum);
+	      this.stats.name_element(sumRow.children[1], "Total");
+	      var resultRow = this.make_goal_total_row(sumRow);
 	      return statsBody;
 	    }
 	  }, {
 	    key: 'make_calorie_total',
-	    value: function make_calorie_total(statBody, total) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
+	    value: function make_calorie_total(total) {
 	      var data = { "Total Calories": total };
-	      var sum = this.stats.add_statistics_table_row(statBody, data, id, className);
+	      var stats = this.stats_section();
+	      var sum = this.stats.add_statistics_table_row(stats, data);
 	      return sum;
 	    }
+
+	    // TO DO - move these to TableStatistics
+
 	  }, {
 	    key: 'make_goal_total_row',
-	    value: function make_goal_total_row(sumRow, className, id) {
-
-	      // TO DO - REFACTOR!
-	      // CELLS should have names for easy access
-
-	      var goal = this.stats.cell_value(document.getElementById(id + 'GoalCell'));
-	      var calories = this.stats.cell_value(sumRow.children[1]);
-	      var result = goal - calories || 0;
-	      var stats = document.getElementById(id + 'Statistics');
+	    value: function make_goal_total_row() {
+	      var stats = this.stats_section();
 	      var row = stats.insertRow();
-	      var cell1 = row.insertCell();
-	      cell1.innerHTML = "Remaining Calories";
+	      this.stats.name_element(row, "GoalTotalRow");
+	      var cell1 = row.insertCell().innerHTML = "Remaining Calories";
 	      var cell2 = row.insertCell();
+	      this.stats.name_element(cell2, "GoalTotal");
+	      var result = this.calculate_meal_result();
 	      cell2.innerHTML = result;
-	      cell2.id = id + 'CalorieResult';
-	      cell2.className = className + 'CalorieResult';
-	      if (result < 0) {
-	        cell2.classList.add('negative');
-	      }
+	      this.add_pos_neg_cell_tag(cell2, result);
 	      return row;
+	    }
+	  }, {
+	    key: 'add_pos_neg_cell_tag',
+	    value: function add_pos_neg_cell_tag(cell, value) {
+	      if (value < 0) {
+	        cell.classList.add('negative');
+	      }
+	      // 0 will be default table css
+	      if (value > 0) {
+	        cell.classList.add('positive');
+	      }
+	    }
+	  }, {
+	    key: 'calculate_meal_result',
+	    value: function calculate_meal_result() {
+	      var goal = this.stats.cell_value(document.getElementById(this.idBase + 'GoalCell'));
+	      var total = this.stats.cell_value(document.getElementById(this.idBase + 'Total'));
+	      var result = goal - total || 0;
+	      return result;
 	    }
 
 	    // TO DO - Logic for daily goal
@@ -336,15 +319,31 @@
 	    _classCallCheck(this, FoodTable);
 
 	    this.className = className; // className base word
-	    this.title = title;
 	    this.idBase = title.toLowerCase(); // id base word
-	    this.table = new _table_builder2.default();
+	    this.title = title;
+	    this.tableBuilder = new _table_builder2.default(this.idBase, this.className);
+	    this.headers = ['Food', 'Calories'];
 	  }
 
 	  _createClass(FoodTable, [{
-	    key: 'headers',
-	    value: function headers() {
-	      return ['Food', 'Calories'];
+	    key: 'table',
+	    value: function table() {
+	      return document.getElementById(this.idBase + 'Table');
+	    }
+	  }, {
+	    key: 'data_rows',
+	    value: function data_rows() {
+	      return document.getElementById(this.idBase + 'TBody');
+	    }
+	  }, {
+	    key: 'stats_section',
+	    value: function stats_section() {
+	      return document.getElementById(this.idBase + 'Statistics');
+	    }
+	  }, {
+	    key: 'header_section',
+	    value: function header_section() {
+	      return document.getElementById(this.idBase + 'Header');
 	    }
 
 	    // ---- Table Container ------
@@ -352,27 +351,23 @@
 	  }, {
 	    key: 'make_specific_table',
 	    value: function make_specific_table(base_element) {
-	      var container = this.make_table_container(base_element, this.idBase);
+	      var container = this.make_table_container(base_element);
 	      var title = this.addContainerTitle(container);
-	      var table = this.make_table(container, this.idBase + 'Table');
-	      var header = this.make_table_headers(table);
-	      var tBody = this.make_table_body(table);
+	      var table = this.make_table(container);
+	      var header = this.make_table_headers();
+	      var tBody = this.make_table_body();
 	      return container;
 	    }
 	  }, {
 	    key: 'make_table_container',
 	    value: function make_table_container(section) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-	      var container = this.table.make_table_container(section, id, this.className);
+	      var container = this.tableBuilder.make_table_container(section);
 	      return container;
 	    }
 	  }, {
 	    key: 'addContainerTitle',
 	    value: function addContainerTitle(container) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-	      var title = this.table.add_table_container_title(container, this.title, id, this.className);
+	      var title = this.tableBuilder.add_table_container_title(container, this.title);
 	      return title;
 	    }
 
@@ -381,44 +376,46 @@
 	  }, {
 	    key: 'make_table',
 	    value: function make_table(container) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-	      var table = this.table.make_table(container, id, this.className);
+	      var table = this.tableBuilder.make_table(container);
 	      return table;
 	    }
 	  }, {
 	    key: 'make_table_headers',
-	    value: function make_table_headers(table) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-	      var header = this.table.make_table_headers(table, this.headers(), id, this.className);
+	    value: function make_table_headers() {
+	      var table = this.table();
+	      var header = this.tableBuilder.make_table_headers(table, this.headers);
 	      return header;
 	    }
 	  }, {
 	    key: 'make_table_body',
-	    value: function make_table_body(table) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-	      var body = this.table.make_table_body(table, id, this.className);
+	    value: function make_table_body() {
+	      var table = this.table();
+	      var body = this.tableBuilder.make_table_body(table);
 	      return body;
 	    }
 	  }, {
 	    key: 'make_table_rows',
-	    value: function make_table_rows(tableBody, data) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-	      var body = this.table.make_table_rows_with_two_columns(tableBody, data, id, this.className);
+	    value: function make_table_rows(data) {
+	      var tableBody = this.data_rows();
+	      var body = this.tableBuilder.make_table_rows_with_two_columns(tableBody, data);
 	      return body;
 	      // TO DO - data will probably be an array of objects like:
 	      // { food: "Banana", calories: 100 }
 	      // If so, this method has to change!
 	    }
+
+	    // make_table_row(tBody, rowData) {
+
 	  }, {
 	    key: 'make_table_row',
-	    value: function make_table_row(tBody, rowData) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-	      var row = this.table.make_table_row_with_two_columns(tBody, rowData, id, this.className);
+	    value: function make_table_row(rowData) {
+	      var body = this.data_rows();
+	      var row = this.tableBuilder.make_table_row_with_two_columns(body, rowData);
+	      var cells = row.children;
+	      var cell2 = cells[1];
+	      var name1 = this.idBase + 'CaloriesCell';
+	      var name2 = this.className + 'CaloriesCell';
+	      name1 != name2 ? cell2.classList.add(name1, name2) : cell2.classList.add(name1);
 	      return row;
 	    }
 	  }]);
@@ -445,23 +442,20 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var TableBuilder = function () {
-	  function TableBuilder() {
+	  function TableBuilder(id, className) {
 	    _classCallCheck(this, TableBuilder);
+
+	    this.idBase = id;
+	    this.className = className;
 	  }
+
+	  // ----- Tools -----
 
 	  _createClass(TableBuilder, [{
 	    key: 'name_element',
-
-
-	    // ----- Tools -----
-
-	    value: function name_element(element, id, className) {
-	      if (id) {
-	        element.id = id;
-	      }
-	      if (className) {
-	        element.className = className;
-	      }
+	    value: function name_element(element, tag) {
+	      element.id = this.idBase + tag;
+	      element.className = this.className + tag;
 	      return element;
 	    }
 
@@ -470,38 +464,26 @@
 	  }, {
 	    key: 'make_tables_container',
 	    value: function make_tables_container(section) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
 	      var tables = document.createElement('div');
 	      section.appendChild(tables);
-	      var name = className ? className + 'Tables' : null;
-	      this.name_element(tables, id, name);
+	      tables.className = this.className + 'Tables';
 	      return tables;
 	    }
 	  }, {
 	    key: 'make_table_container',
 	    value: function make_table_container(section) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
 	      var container = document.createElement('span');
-	      var name = className ? className + 'Container' : null;
-	      this.name_element(container, id, name);
+	      this.name_element(container, "Container");
 	      section.appendChild(container);
 	      return container;
 	    }
 	  }, {
 	    key: 'add_table_container_title',
 	    value: function add_table_container_title(container, title) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
 	      var text = document.createTextNode(title);
 	      var p = document.createElement('p');
 	      p.appendChild(text);
-	      var name = className ? className + 'TableTitle' : null;
-	      this.name_element(p, id, name);
+	      this.name_element(p, "TableTitle");
 	      container.appendChild(p);
 	      return p;
 	    }
@@ -511,63 +493,46 @@
 	  }, {
 	    key: 'make_table',
 	    value: function make_table(container) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
 	      var table = document.createElement('table');
-	      var name = className ? className + 'Table' : null;
-	      this.name_element(table, id, name);
+	      this.name_element(table, "Table");
 	      container.appendChild(table);
 	      return table;
 	    }
 	  }, {
 	    key: 'make_table_headers',
 	    value: function make_table_headers(table, headers) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
 	      var header = table.createTHead();
 	      var row = header.insertRow();
 	      for (var i = 0; i < headers.length; i++) {
 	        var cell = row.insertCell(i);
 	        cell.innerHTML = headers[i];
 	      }
-	      var name = className ? className + 'Header' : null;
-	      this.name_element(header, id, name);
+	      this.name_element(header, "Header");
 	      return header;
 	    }
 	  }, {
 	    key: 'make_table_body',
 	    value: function make_table_body(table) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
 	      var body = table.createTBody();
-	      var name = className ? className + 'TBody' : null;
-	      this.name_element(body, id, name);
+	      this.name_element(body, "TBody");
 	      return body;
 	    }
 	  }, {
 	    key: 'make_table_rows_with_two_columns',
 	    value: function make_table_rows_with_two_columns(tableBody, data) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
 	      for (var key in data) {
 	        var pair = _defineProperty({}, key, data[key]);
-	        this.make_table_row_with_two_columns(tableBody, pair, id, className);
+	        this.make_table_row_with_two_columns(tableBody, pair);
 	      }
 	      return tableBody;
 	    }
 	  }, {
 	    key: 'make_table_row_with_two_columns',
 	    value: function make_table_row_with_two_columns(tableBody, rowData) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
 	      var row = tableBody.insertRow();
-	      var name = className ? className + 'Row' : null;
-	      this.name_element(row, id, name);
+	      var name1 = this.idBase + 'Row';
+	      var name2 = this.className + 'Row';
+	      name1 != name2 ? row.classList.add(name1, name2) : row.classList.add(name1);
 	      if (rowData) {
 	        this.fill_two_cell_row(row, rowData);
 	      }
@@ -611,11 +576,14 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var TableStatistics = function () {
-	  function TableStatistics() {
+	  function TableStatistics(id, className) {
 	    _classCallCheck(this, TableStatistics);
 
 	    // this.tables = []
-	    this.table = new _table_builder2.default();
+	    // this.table = new TableBuilder
+	    this.idBase = id;
+	    this.className = className;
+	    this.table = new _table_builder2.default(id, className);
 	  }
 
 	  // ---- Tools ----
@@ -628,6 +596,11 @@
 	    key: 'cell_value',
 	    value: function cell_value(cell) {
 	      return parseInt(cell.innerText) || 0;
+	    }
+	  }, {
+	    key: 'name_element',
+	    value: function name_element(element, tag) {
+	      this.table.name_element(element, tag);
 	    }
 
 	    // ---- Calculator ----
@@ -652,26 +625,18 @@
 	  }, {
 	    key: 'add_statistics_table_body',
 	    value: function add_statistics_table_body(table) {
-	      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
 	      var body = table.createTBody();
-	      var name = className ? className + 'Statistics' : null;
-	      var iden = id ? id + 'Statistics' : null;
-	      this.table.name_element(body, iden, name);
+	      this.table.name_element(body, 'Statistics');
 	      return body;
 	    }
 	  }, {
 	    key: 'add_statistics_table_row',
-	    value: function add_statistics_table_row(tbody, data) {
-	      var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+	    value: function add_statistics_table_row(tbody) {
+	      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
 	      // LIMITATION - this can only hand a row with 2 columns
 	      var row = tbody.insertRow();
-	      var name = className ? className + 'Calculation' : null;
-	      var iden = id ? id + 'Calculation' : null;
-	      this.table.name_element(row, iden, name);
+	      this.table.name_element(row, 'TotalRow');
 	      if (data) {
 	        this.table.fill_two_cell_row(row, data);
 	      }
