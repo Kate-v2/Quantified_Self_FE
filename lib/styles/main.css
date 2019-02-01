@@ -1,0 +1,65 @@
+
+.negative { color: red;   }
+.positive { color: green; }
+
+#content {
+  display:        flex;
+  flex-direction: row;
+  flex-wrap:      wrap;
+}
+
+.mealContainer{
+  padding:    3%;
+  margin:     5%;
+  background: lightgrey;
+  opacity:    0.5;
+}
+
+.mealTableTitle {
+  text-align: center;
+  margin:      2%;
+  font-size:   140%;
+  font-weight: bold;
+}
+
+.foodContainer{
+  padding: 5%;
+}
+
+
+/* .mealHeader:first-child { */
+.mealGoal {
+  font-size:   90%;
+  font-weight: bold;
+}
+
+.mealHeader tr:last-child {
+  /* text-align: center; */
+  font-weight: bold;
+  font-size:   70%;
+}
+
+
+.mealTBody td {
+  font-size: 90%;
+  /* text-align: center; */
+}
+
+.mealTBody tr:nth-child(even) {background-color: #f2f2f2;}
+
+.mealGoal         td:first-child { text-align: center;}
+.mealTotalRow     td:first-child { text-align: center;}
+.mealGoalTotalRow td:first-child { text-align: center;}
+
+.mealStatistics {
+  /* Need to override default css */
+  padding:      5%;
+  font-size:    80%;
+  font-weight:  bold;
+  border-style: solid;
+  border-color: black;
+}
+
+td {
+  /* Need to override default css */
+}
