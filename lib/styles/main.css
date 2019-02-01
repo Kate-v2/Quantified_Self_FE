@@ -7,24 +7,63 @@
   flex-direction: row;
   flex-wrap:      wrap;
 }
-
-.mealContainer{
+.mealContainer {
+  width:      30%;
   padding:    3%;
   margin:     5%;
   background: lightgrey;
   opacity:    0.5;
+  display:        flex;
+  flex-direction: row;
+  flex-wrap:      wrap;
+  justify-content: center;
 }
 
-.mealTableTitle {
+#dailyCalories {
+  display:        flex;
+  flex-direction: row;
+  flex-wrap:      wrap;
+  justify-content: center;
+}
+#dailyCaloriesContainer {
+  width:      30%;
+  padding:    3%;
+  margin:     5%;
+  background: lightblue;
+  opacity:    0.5;
+  display:        flex;
+  flex-direction: row;
+  flex-wrap:      wrap;
+  justify-content: center;
+}
+
+#food {
+  display:        flex;
+  flex-direction: row;
+  flex-wrap:      wrap;
+  justify-content: center;
+}
+.foodContainer{
+  width:      30%;
+  padding:    3%;
+  margin:     5%;
+  background: lightgreen;
+  opacity:    0.5;
+  display:        flex;
+  flex-direction: row;
+  flex-wrap:      wrap;
+  justify-content: center;
+}
+
+
+.mealTableTitle, #foodTableTitle, #dailyCaloriesTableTitle {
   text-align: center;
   margin:      2%;
   font-size:   140%;
   font-weight: bold;
+  width: 100%;
 }
 
-.foodContainer{
-  padding: 5%;
-}
 
 
 /* .mealHeader:first-child { */
@@ -33,7 +72,7 @@
   font-weight: bold;
 }
 
-.mealHeader tr:last-child {
+.mealHeader tr:last-child, .foodHeader tr:last-child {
   /* text-align: center; */
   font-weight: bold;
   font-size:   70%;
@@ -46,6 +85,7 @@
 }
 
 .mealTBody tr:nth-child(odd) {background-color: #f2f2f2;}
+.foodTBody tr:nth-child(odd) {background-color: #f2f2f2;}
 
 .mealGoal         td:first-child { text-align: center;}
 .mealTotalRow     td:first-child { text-align: center;}

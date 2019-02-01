@@ -54,6 +54,10 @@
 
 	var _calorie_stats_table2 = _interopRequireDefault(_calorie_stats_table);
 
+	var _food_table = __webpack_require__(2);
+
+	var _food_table2 = _interopRequireDefault(_food_table);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var data = {
@@ -100,20 +104,20 @@
 	snackBuilder.make_table_goal(500);
 	snackBuilder.make_stats_section();
 
-	// ---- Food ----
-
-	// import FoodTable from './classes/food_table.js'
-	// const foodTable = new FoodTable()
-	// let container = foodTable.make_specific_table(base_element)
-	// foodTable.make_table_rows(data)
-	// foodTable.make_table_row( more)
-
 	// ---- Daily ----
 	//
 
 	var daily = new _calorie_stats_table2.default();
 
 	daily.make_daily_calories_table();
+
+	// ---- Food ----
+
+	var foodTable = new _food_table2.default();
+	var element = foodTable.new_section();
+	var container = foodTable.make_specific_table(element);
+	foodTable.make_table_rows(data);
+	foodTable.make_table_row(more);
 
 /***/ }),
 /* 1 */
@@ -356,6 +360,13 @@
 
 	    // ---- Table Container ------
 
+	  }, {
+	    key: 'new_section',
+	    value: function new_section() {
+	      var div = document.createElement('div');
+	      div.id = this.idBase;
+	      return document.body.appendChild(div);
+	    }
 	  }, {
 	    key: 'make_specific_table',
 	    value: function make_specific_table(base_element) {
