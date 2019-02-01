@@ -45,7 +45,7 @@
   /* text-align: center; */
 }
 
-.mealTBody tr:nth-child(even) {background-color: #f2f2f2;}
+.mealTBody tr:nth-child(odd) {background-color: #f2f2f2;}
 
 .mealGoal         td:first-child { text-align: center;}
 .mealTotalRow     td:first-child { text-align: center;}
