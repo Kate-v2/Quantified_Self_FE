@@ -50,6 +50,10 @@
 
 	var _meal_table2 = _interopRequireDefault(_meal_table);
 
+	var _calorie_stats_table = __webpack_require__(5);
+
+	var _calorie_stats_table2 = _interopRequireDefault(_calorie_stats_table);
+
 	var _food_table = __webpack_require__(2);
 
 	var _food_table2 = _interopRequireDefault(_food_table);
@@ -100,10 +104,18 @@
 	snackBuilder.make_table_goal(500);
 	snackBuilder.make_stats_section();
 
+	// ---- Daily ----
+	//
+
+	var daily = new _calorie_stats_table2.default();
+
+	daily.make_daily_calories_table();
+
 	// ---- Food ----
 
 	var foodTable = new _food_table2.default();
-	var container = foodTable.make_specific_table(base_element);
+	var element = foodTable.new_section();
+	var container = foodTable.make_specific_table(element);
 	foodTable.make_table_rows(data);
 	foodTable.make_table_row(more);
 
@@ -349,6 +361,13 @@
 	    // ---- Table Container ------
 
 	  }, {
+	    key: 'new_section',
+	    value: function new_section() {
+	      var div = document.createElement('div');
+	      div.id = this.idBase;
+	      return document.body.appendChild(div);
+	    }
+	  }, {
 	    key: 'make_specific_table',
 	    value: function make_specific_table(base_element) {
 	      var container = this.make_table_container(base_element);
@@ -454,8 +473,12 @@
 	  _createClass(TableBuilder, [{
 	    key: 'name_element',
 	    value: function name_element(element, tag) {
-	      element.id = this.idBase + tag;
-	      element.className = this.className + tag;
+	      if (this.idBase) {
+	        element.id = this.idBase + tag;
+	      }
+	      if (this.className) {
+	        element.className = this.className + tag;
+	      }
 	      return element;
 	    }
 
@@ -648,6 +671,174 @@
 	}();
 
 	exports.default = TableStatistics;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _table_builder = __webpack_require__(3);
+
+	var _table_builder2 = _interopRequireDefault(_table_builder);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var CalorieStatsTable = function () {
+	  function CalorieStatsTable() {
+	    _classCallCheck(this, CalorieStatsTable);
+
+	    // this.Class        = 'DailyCalories'
+	    this.idBase = 'dailyCalories';
+	    this.tableBuilder = new _table_builder2.default(this.idBase, null);
+	    // this.tableBuilder = new TableBuilder(this.idBase, this.idBase)
+	  }
+
+	  _createClass(CalorieStatsTable, [{
+	    key: 'container',
+	    value: function container() {
+	      // debugger
+	      return document.getElementById(this.idBase + 'Container');
+	    }
+	  }, {
+	    key: 'table',
+	    value: function table() {
+	      return document.getElementById(this.idBase + 'Table');
+	    }
+	  }, {
+	    key: 'tBody',
+	    value: function tBody() {
+	      return document.getElementById(this.idBase + 'TBody');
+	    }
+	  }, {
+	    key: 'make_daily_calories_table',
+	    value: function make_daily_calories_table() {
+	      var section = this.make_daily_calories_section();
+	      var container = this.make_daily_calories_container();
+	      var title = this.tableBuilder.add_table_container_title(container, "Today's Calorie Summary");
+	      var dtable = this.make_table();
+	      var tBody = this.make_table_body();
+
+	      var goal = ["Goal Calories", this.goal_total()];
+	      var goalRow = this.add_row(goal, 'Goal');
+	      var goalCell = goalRow.children[1];
+
+	      var calories = ["Consumed Calories", this.calories_total()];
+	      var calRow = this.add_row(calories, 'Calories');
+	      var calCell = calRow.children[1];
+
+	      var diff = this.get_cell_difference(goalCell, calCell);
+	      var summary = ["Summary", diff];
+	      var summaryRow = this.add_row(summary, 'Summary');
+	      var summaryCell = summaryRow.children[1];
+	      if (this.cell_value(summaryCell) > 0) {
+	        summaryCell.className = 'positive';
+	      }
+	      if (this.cell_value(summaryCell) < 0) {
+	        summaryCell.className = 'negative';
+	      }
+	      return section;
+	    }
+
+	    // ---- Calculator ----
+
+	  }, {
+	    key: 'goal_total',
+	    value: function goal_total() {
+	      return this.get_cells_total('mealGoalCell');
+	    }
+	  }, {
+	    key: 'calories_total',
+	    value: function calories_total() {
+	      return this.get_cells_total('mealTotal');
+	    }
+	  }, {
+	    key: 'get_cells_total',
+	    value: function get_cells_total(id) {
+	      var cells = document.getElementsByClassName(id);
+	      var sum = 0;
+	      var l = cells.length;
+	      for (var i = 0; i < l; i++) {
+	        sum += this.cell_value(cells[i]);
+	      }
+	      return sum;
+	    }
+	  }, {
+	    key: 'get_cell_difference',
+	    value: function get_cell_difference(pos, neg) {
+	      return this.cell_value(pos) - this.cell_value(neg);
+	    }
+	  }, {
+	    key: 'cell_value',
+	    value: function cell_value(cell) {
+	      return parseInt(cell.innerHTML);
+	    }
+
+	    // ---- Page Building ----
+
+	  }, {
+	    key: 'make_daily_calories_section',
+	    value: function make_daily_calories_section() {
+	      var section = document.createElement('div');
+	      section.id = this.idBase;
+	      var div = document.body.appendChild(section);
+	      return section;
+	    }
+	  }, {
+	    key: 'make_daily_calories_container',
+	    value: function make_daily_calories_container() {
+	      var container = document.createElement('span');
+	      container.id = this.idBase + 'Container';
+	      var section = document.getElementById(this.idBase);
+	      section.appendChild(container);
+	      return container;
+	    }
+
+	    // ---- Table Building ----
+
+	  }, {
+	    key: 'make_table',
+	    value: function make_table() {
+	      var container = this.container();
+	      var table = this.tableBuilder.make_table(container);
+	      table.id = this.idBase + 'Table';
+	      return table;
+	    }
+	  }, {
+	    key: 'make_table_body',
+	    value: function make_table_body() {
+	      var table = this.table();
+	      var body = this.tableBuilder.make_table_body(table);
+	      body.id = this.idBase + 'TBody';
+	      return body;
+	    }
+	  }, {
+	    key: 'add_row',
+	    value: function add_row(data, tag) {
+	      var body = this.tBody();
+	      var row = body.insertRow();
+	      row.id = this.idBase + tag;
+	      row.className = this.idBase + 'Row';
+	      for (var i = 0; i < data.length; i++) {
+	        var cell = row.insertCell();
+	        cell.innerHTML = data[i];
+	      }
+	      return row;
+	    }
+	  }]);
+
+	  return CalorieStatsTable;
+	}();
+
+	exports.default = CalorieStatsTable;
 
 /***/ })
 /******/ ]);
