@@ -77,6 +77,13 @@
 	var snackBuilder = new _meal_table2.default('snack');
 	var snackTable = snackBuilder.make_meal_table(base_element);
 
+	// ---- Daily ----
+
+	var daily = new _calorie_stats_table2.default();
+
+	// daily.make_daily_calories_table()
+
+
 	var target = "https://protected-retreat-87261.herokuapp.com/api/v1/meals";
 
 	var breakfast_data = null;
@@ -120,17 +127,12 @@
 	  lunchBuilder.make_stats_section();
 	  dinnerBuilder.make_stats_section();
 	  snackBuilder.make_stats_section();
+	}).then(function () {
+	  daily.make_daily_calories_table();
 	}).catch(function (e) {
 	  console.log(e);
 	  return e;
 	});
-
-	// ---- Daily ----
-	//
-
-	var daily = new _calorie_stats_table2.default();
-
-	daily.make_daily_calories_table();
 
 	// ---- Food ----
 
@@ -325,16 +327,6 @@
 	      var result = goal - total || 0;
 	      return result;
 	    }
-
-	    // TO DO - Logic for daily goal
-	    // let mealGoals = document.getElementsByClassName('mealGoalCell')
-	    // let l = mealGoals.length
-	    // let sum = 0
-	    // for(let i=0; i < l; i++) {
-	    //   sum += this.stats.cell_value(mealGoals[i])
-	    // }
-
-
 	  }]);
 
 	  return MealTable;
@@ -734,7 +726,6 @@
 	  _createClass(CalorieStatsTable, [{
 	    key: 'container',
 	    value: function container() {
-	      // debugger
 	      return document.getElementById(this.idBase + 'Container');
 	    }
 	  }, {
