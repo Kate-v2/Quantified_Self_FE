@@ -44,7 +44,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var _calorie_stats_table = __webpack_require__(1);
 
@@ -56,14 +56,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var data = {
-	  "Banana": 100,
-	  "Apple": 120,
-	  "Orange": 110
-	};
+	// let data = {
+	//   "Banana": 100,
+	//   "Apple":  120,
+	//   "Orange": 110
+	// }
+	//
+	// let more  = { "Chocolate": 150 }
+	// let extra = { 'Grapes':    200 }
 
-	var more = { "Chocolate": 150 };
-	var extra = { 'Grapes': 200 };
 
 	var base_element = document.getElementById('content');
 	base_element.innerHTML = '';
@@ -118,17 +119,27 @@
 	//  API REQUEST HERE
 
 	var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods';
-	fetch(target).then(function (blob) {
-	  return blob.json();
-	}).then(function (data) {
-	  foodTable.make_table_rows(data);
-	}).catch(function (e) {
-	  console.log(e);
-	  return e;
-	});
+	// fetch(target)
+	//   .then(blob => blob.json() )
+	//   .then(data => {
+	//     foodTable.make_table_rows(data)
+	//   })
+	//   .catch(e => {
+	//     console.log(e);
+	//     return e;
+	//   });
+	service(foodTable, target);
 
-	// foodTable.make_table_rows(data)
-	// foodTable.make_table_row( more)
+	function service(model, target) {
+	  fetch(target).then(function (blob) {
+	    return blob.json();
+	  }).then(function (data) {
+	    model.make_table_rows(data);
+	  }).catch(function (e) {
+	    console.log(e);
+	    return e;
+	  });
+	}
 
 /***/ }),
 /* 1 */
