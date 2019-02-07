@@ -56,19 +56,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	switch (document.location['pathname']) {
-	  case '/meals.html':
-	    makeMealsPage();
-	    break;
-	  case '/foods.html':
-	    makeFoodsPage();
-	    break;
-	  case '/':
-	    makeHomePage();
-	    break;
-	  case '/index.html':
-	    makeHomePage();
-	    break;
+	var path = document.location['pathname'];
+	if (path.includes('/meals.html')) {
+	  makeMealsPage();
+	}
+	if (path.includes('/foods.html')) {
+	  makeFoodsPage();
+	}
+	if (path.includes('/index.html') || path.endsWith('/')) {
+	  makeHomePage();
 	}
 
 	function clearContainer() {
