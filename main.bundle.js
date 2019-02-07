@@ -54,17 +54,41 @@
 
 	var _food_table2 = _interopRequireDefault(_food_table);
 
+	var _nav_bar = __webpack_require__(7);
+
+	var _nav_bar2 = _interopRequireDefault(_nav_bar);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var path = document.location['pathname'];
-	if (path.includes('/meals.html')) {
-	  makeMealsPage();
+	var nav = new _nav_bar2.default();
+	nav.add_buttons();
+
+	var user = nav.get_session();
+	var path = nav.path();
+	var root_path = nav.is_root();
+	var sad_path = nav.sad_path();
+
+	if (sad_path) {
+	  nav.sad_redirect();
+	  // setTimeOut(function() {
+	  //   debugger
+	  // }, 10000)
+	  // nav.sad_feedback()
+	  // debugger
+	} else {
+	  show_paths();
 	}
-	if (path.includes('/foods.html')) {
-	  makeFoodsPage();
-	}
-	if (path.includes('/index.html') || path.endsWith('/')) {
-	  makeHomePage();
+
+	function show_paths() {
+	  if (path.includes('/meals.html')) {
+	    makeMealsPage();
+	  }
+	  if (path.includes('/foods.html')) {
+	    makeFoodsPage();
+	  }
+	  if (root_path) {
+	    makeHomePage();
+	  }
 	}
 
 	function clearContainer() {
@@ -75,7 +99,27 @@
 
 	function makeHomePage() {
 	  var div = clearContainer();
-	  div.innerHTML = "Welcome!";
+	  var welcome = document.createElement('div');
+	  welcome.id = 'welcome';
+	  document.body.appendChild(welcome);
+	  welcome.innerHTML = "<h2>Welcome!</h2>";
+	  getStarted(welcome);
+	}
+
+	function getStarted(div) {
+	  user ? instructions(div) : div.appendChild(make_new_paragraph("To get started, Login!"));
+	}
+
+	function instructions(div) {
+	  div.appendChild(make_new_paragraph("Go to Today's Meals to add foods to your daily meals"));
+	  div.appendChild(make_new_paragraph("...Or go to Foods to view all foods you've added"));
+	  div.appendChild(make_new_paragraph("...Or go to Calendar to view all your meal entries!"));
+	}
+
+	function make_new_paragraph(text) {
+	  var p = document.createElement('p');
+	  p.innerHTML = text;
+	  return p;
 	}
 
 	function makeMealsPage() {
@@ -944,6 +988,233 @@
 	}();
 
 	exports.default = CalorieStatsTable;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var NavBar = function () {
+	  function NavBar() {
+	    _classCallCheck(this, NavBar);
+	  }
+
+	  _createClass(NavBar, [{
+	    key: 'generic_button',
+
+
+	    // ---- Tools ----
+
+	    value: function generic_button(text, name) {
+	      var button = document.createElement('span');
+	      button.innerHTML = text;
+	      this.name_button(button, name);
+	      this.nav().appendChild(button);
+	      return button;
+	    }
+	  }, {
+	    key: 'name_button',
+	    value: function name_button(button, idBase) {
+	      button.id = idBase + 'Button';
+	      button.className = 'navButton';
+	    }
+
+	    // ---- Nav Bar ----
+
+
+	  }, {
+	    key: 'nav',
+	    value: function nav() {
+	      return document.getElementById('navBar');
+	    }
+	  }, {
+	    key: 'clearNav',
+	    value: function clearNav() {
+	      return this.nav().innerHTML = '';
+	    }
+
+	    // ---- Feedback ----
+
+	  }, {
+	    key: 'feedback',
+	    value: function feedback() {
+	      return document.getElementById('feedback');
+	    }
+	  }, {
+	    key: 'clearFeedback',
+	    value: function clearFeedback() {
+	      return this.feedback().innerHTML = '';
+	    }
+
+	    // ---- Path ----
+
+	  }, {
+	    key: 'path',
+	    value: function path() {
+	      return document.location.pathname;
+	    }
+	  }, {
+	    key: 'is_root',
+	    value: function is_root() {
+	      var path = this.path();
+	      return path.includes('/index.html') || path.endsWith('/');
+	    }
+	  }, {
+	    key: 'root_redirect',
+	    value: function root_redirect() {
+	      window.location.href = "index.html";
+	    }
+	  }, {
+	    key: 'sad_path',
+	    value: function sad_path() {
+	      return !this.get_session() && !this.is_root();
+	    }
+	  }, {
+	    key: 'sad_redirect',
+	    value: function sad_redirect() {
+	      this.root_redirect();
+	    }
+	  }, {
+	    key: 'sad_feedback',
+	    value: function sad_feedback() {
+	      this.update_feedback("Login Please.");
+	    }
+
+	    // ---- Build Nav ----
+
+	  }, {
+	    key: 'add_buttons',
+	    value: function add_buttons() {
+	      this.clearNav();
+	      this.home_button();
+	      this.get_session() ? this.user_buttons() : this.make_session_buttons();
+	    }
+	  }, {
+	    key: 'update_feedback',
+	    value: function update_feedback(text) {
+	      this.clearFeedback();
+	      this.feedback().innerHTML = text;
+	      return this.feedback();
+	    }
+	  }, {
+	    key: 'home_button',
+	    value: function home_button() {
+	      var path = document.location.pathname;
+	      if (!path.endsWith('/') && !path.endsWith('/index.html')) {
+	        var text = "<a href='index.html'>Home</a>";
+	        var button = this.generic_button(text, 'home');
+	        return button;
+	      } else {
+	        this.generic_button("Hello", 'home');
+	      }
+	    }
+	  }, {
+	    key: 'user_buttons',
+	    value: function user_buttons() {
+	      this.make_foods_button();
+	      this.make_todays_meals_button();
+	      this.make_calendar_button();
+	      this.make_logout_button();
+	    }
+	  }, {
+	    key: 'make_foods_button',
+	    value: function make_foods_button() {
+	      if (this.path().endsWith('/foods.html')) {
+	        return;
+	      }
+	      var text = "<a href='foods.html'>Foods</a>";
+	      var button = this.generic_button(text, 'foods');
+	      return button;
+	    }
+	  }, {
+	    key: 'make_todays_meals_button',
+	    value: function make_todays_meals_button() {
+	      if (this.path().endsWith('/meals.html')) {
+	        return;
+	      }
+	      var text = "<a href='meals.html'>Today's Meals</a>";
+	      var button = this.generic_button(text, 'today');
+	      return button;
+	    }
+	  }, {
+	    key: 'make_calendar_button',
+	    value: function make_calendar_button() {
+	      if (this.path().endsWith('/calendar.html')) {
+	        return;
+	      }
+	      var text = "<a href='calendar.html'>Calendar</a>";
+	      var button = this.generic_button(text, 'calendar');
+	      return button;
+	    }
+	  }, {
+	    key: 'make_session_buttons',
+	    value: function make_session_buttons() {
+	      this.login_button();
+	      this.register_button();
+	    }
+	  }, {
+	    key: 'login_button',
+	    value: function login_button() {
+	      var button = this.generic_button("Login", "Login");
+	      button.onclick = function () {
+	        var nav = new NavBar();
+	        nav.set_session();
+	        nav.add_buttons();
+	      };
+	      return button;
+	    }
+	  }, {
+	    key: 'register_button',
+	    value: function register_button() {
+	      var button = this.generic_button("Register", "Register");
+	      // does nothing right now
+	      return button;
+	    }
+	  }, {
+	    key: 'make_logout_button',
+	    value: function make_logout_button() {
+	      var button = this.generic_button('Logout', 'Logout');
+	      button.onclick = function () {
+	        var nav = new NavBar();
+	        nav.reset_session();
+	        nav.root_redirect();
+	        nav.add_buttons();
+	      };
+	      return button;
+	    }
+
+	    // ---- Session ----
+
+	  }, {
+	    key: 'get_session',
+	    value: function get_session() {
+	      return sessionStorage.getItem("user");
+	    }
+	  }, {
+	    key: 'set_session',
+	    value: function set_session() {
+	      sessionStorage.setItem("user", "FAKE"); // faking login
+	    }
+	  }, {
+	    key: 'reset_session',
+	    value: function reset_session() {
+	      sessionStorage.removeItem('user');
+	    }
+	  }]);
+
+	  return NavBar;
+	}();
+
+	exports.default = NavBar;
 
 /***/ })
 /******/ ]);
