@@ -99,23 +99,6 @@
 	function makeFoodsPage() {
 	  var service = new _food_service2.default();
 	  service.makeFoodsPage();
-	  // clearContainer()
-	  // const foodTable = new FoodTable()
-	  // let element     = foodTable.new_section()
-	  // let container   = foodTable.make_specific_table(element)
-	  // var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods'
-	  // get_service(foodTable, target)
-	  // function get_service(model, target) {
-	  //   fetch(target)
-	  //     .then(blob => blob.json() )
-	  //     .then(data => {
-	  //       model.make_table_rows(data)
-	  //     })
-	  //     .catch(e => {
-	  //       console.log(e);
-	  //       return e;
-	  //     });
-	  // }
 	}
 
 /***/ }),
@@ -498,6 +481,7 @@
 	      var table = this.make_table(container);
 	      var header = this.make_table_headers();
 	      var tBody = this.make_table_body();
+	      var newField = this.make_new_field();
 	      return container;
 	    }
 	  }, {
@@ -553,6 +537,14 @@
 	      var name2 = this.className + 'CaloriesCell';
 	      name1 != name2 ? cell2.classList.add(name1, name2) : cell2.classList.add(name1);
 	      return row;
+	    }
+
+	    // ----- New Field -----
+
+	  }, {
+	    key: 'make_new_field',
+	    value: function make_new_field() {
+	      this.tableBuilder.make_new_field();
 	    }
 	  }]);
 
@@ -683,6 +675,63 @@
 	      cell1.innerHTML = rowData['title'];
 	      cell2.innerHTML = rowData['calories'];
 	      return row;
+	    }
+
+	    // ----- New Field -----
+
+	  }, {
+	    key: 'make_new_field',
+	    value: function make_new_field() {
+	      var table = document.getElementById(this.idBase + 'Table');
+	      var body = document.getElementById(this.idBase + 'TBody');
+	      var newBody = this.make_new_body(table, body);
+	      var newRow = this.make_new_row(newBody);
+	    }
+	  }, {
+	    key: 'make_new_body',
+	    value: function make_new_body(table, body) {
+	      var newBody = document.createElement('tbody');
+	      this.name_element(newBody, "NewBody");
+	      table.prepend(newBody, body);
+	      return newBody;
+	    }
+	  }, {
+	    key: 'make_new_row',
+	    value: function make_new_row(body) {
+	      var row = body.insertRow();
+	      this.name_element(row, "NewRow");
+	      var cell1 = this.make_new_name_cell(row);
+	      var cell2 = this.make_new_calorie_cell(row);
+	      return row;
+	    }
+	  }, {
+	    key: 'make_new_name_cell',
+	    value: function make_new_name_cell(row) {
+	      var cell = row.insertCell();
+	      this.name_element(cell, "NewNameCell");
+	      var placeholder = "New Food Name";
+	      var input = this.make_input(cell, placeholder);
+	      this.name_element(input, "NewName");
+	      return cell;
+	    }
+	  }, {
+	    key: 'make_new_calorie_cell',
+	    value: function make_new_calorie_cell(row) {
+	      var cell = row.insertCell();
+	      this.name_element(cell, "NewCaloriesCell");
+	      var placeholder = "New Calories";
+	      var input = this.make_input(cell, placeholder);
+	      this.name_element(input, "NewCalories");
+	      return cell;
+	    }
+	  }, {
+	    key: 'make_input',
+	    value: function make_input(cell, placeholder) {
+	      var input = document.createElement('input');
+	      input.type = 'text';
+	      input.placeholder = placeholder;
+	      cell.appendChild(input);
+	      return input;
 	    }
 	  }]);
 
@@ -954,7 +1003,7 @@
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -963,6 +1012,12 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _food_table = __webpack_require__(3);
+
+	var _food_table2 = _interopRequireDefault(_food_table);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -973,20 +1028,16 @@
 
 	  _createClass(FoodService, [{
 	    key: 'clearContainer',
-	    value: function clearContainer() {
+	    value: function clearContainer(model) {
 	      var div = document.getElementById('Food');
-	      div.innerHTML = '';
-	      debugger;
+	      div ? div.innerHTML = '' : div = model.new_section();
 	      return div;
 	    }
 	  }, {
 	    key: 'makeFoodsPage',
 	    value: function makeFoodsPage() {
-	      var foodTable = new FoodTable();
-	      var element = his.clearContainer();
-	      if (!element) {
-	        element = foodTable.new_section();
-	      }
+	      var foodTable = new _food_table2.default();
+	      var element = this.clearContainer(foodTable);
 	      var container = foodTable.make_specific_table(element);
 	      var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods';
 	      this.get_foods(foodTable);
