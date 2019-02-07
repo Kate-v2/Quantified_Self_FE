@@ -44,80 +44,47 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _meal_table = __webpack_require__(1);
+	var _view_meals = __webpack_require__(1);
 
-	var _meal_table2 = _interopRequireDefault(_meal_table);
-
-	var _calorie_stats_table = __webpack_require__(5);
-
-	var _calorie_stats_table2 = _interopRequireDefault(_calorie_stats_table);
-
-	var _food_table = __webpack_require__(2);
-
-	var _food_table2 = _interopRequireDefault(_food_table);
+	var _view_meals2 = _interopRequireDefault(_view_meals);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var data = {
-	  "Banana": 100,
-	  "Apple": 120,
-	  "Orange": 110
-	};
-
-	var more = { "Chocolate": 150 };
-	var extra = { 'Grapes': 200 };
-
-	var base_element = document.getElementById('content');
-	base_element.innerHTML = '';
-
-	// ---- Meal Experiment ---
-
-	var breakfastBuilder = new _meal_table2.default('breakfast');
-	var breakfastTable = breakfastBuilder.make_meal_table(base_element);
-	//  API REQUEST HERE
-	breakfastBuilder.make_table_rows(data);
-	breakfastBuilder.make_table_row(more);
-	breakfastBuilder.make_table_row(extra);
-	breakfastBuilder.make_table_goal(500);
-	breakfastBuilder.make_stats_section();
-
-	var lunchBuilder = new _meal_table2.default('lunch');
-	var lunchTable = lunchBuilder.make_meal_table(base_element);
-	//  API REQUEST HERE
-	lunchBuilder.make_table_rows(data);
-	lunchBuilder.make_table_row(more);
-	lunchBuilder.make_table_goal(500);
-	lunchBuilder.make_stats_section();
-
-	var dinnerBuilder = new _meal_table2.default('dinner');
-	var dinnerTable = dinnerBuilder.make_meal_table(base_element);
-	//  API REQUEST HERE
-	dinnerBuilder.make_table_goal(500);
-	dinnerBuilder.make_stats_section();
-
-	var snackBuilder = new _meal_table2.default('snack');
-	var snackTable = snackBuilder.make_meal_table(base_element);
-	//  API REQUEST HERE
-	snackBuilder.make_table_row({ 'snack': 500 });
-	snackBuilder.make_table_goal(500);
-	snackBuilder.make_stats_section();
-
-	// ---- Daily ----
-	//
-
-	var daily = new _calorie_stats_table2.default();
-
-	daily.make_daily_calories_table();
+	var viewMeals = new _view_meals2.default();
+	viewMeals.make_tables();
+	fetch(viewMeals.target).then(function (blob) {
+	  return blob.json();
+	}).then(function (data) {
+	  viewMeals.make_page(data);
+	}).catch(function (e) {
+	  console.log(e);
+	  return e;
+	});
 
 	// ---- Food ----
-
-	var foodTable = new _food_table2.default();
-	var element = foodTable.new_section();
-	var container = foodTable.make_specific_table(element);
-	foodTable.make_table_rows(data);
-	foodTable.make_table_row(more);
+	//
+	// import FoodTable from './classes/food_table.js'
+	// const foodTable = new FoodTable()
+	// let element     = foodTable.new_section()
+	// let container   = foodTable.make_specific_table(element)
+	// var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods'
+	// // target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods'
+	// get_service(foodTable, target)
+	//
+	//
+	// function get_service(model, target) {
+	//   fetch(target)
+	//     .then(blob => blob.json() )
+	//     .then(data => {
+	//       model.make_table_rows(data)
+	//     })
+	//     .catch(e => {
+	//       console.log(e);
+	//       return e;
+	//     });
+	// }
 
 /***/ }),
 /* 1 */
@@ -131,11 +98,140 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _food_table = __webpack_require__(2);
+	var _meal_table = __webpack_require__(2);
+
+	var _meal_table2 = _interopRequireDefault(_meal_table);
+
+	var _calorie_stats_table = __webpack_require__(6);
+
+	var _calorie_stats_table2 = _interopRequireDefault(_calorie_stats_table);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ViewMeals = function () {
+	  function ViewMeals() {
+	    _classCallCheck(this, ViewMeals);
+
+	    this.breakfastBuilder = new _meal_table2.default('breakfast');
+	    this.lunchBuilder = new _meal_table2.default('lunch');
+	    this.dinnerBuilder = new _meal_table2.default('dinner');
+	    this.snackBuilder = new _meal_table2.default('snack');
+	    this.daily = new _calorie_stats_table2.default();
+
+	    this.target = "https://protected-retreat-87261.herokuapp.com/api/v1/meals";
+
+	    this.breakfast_data = null;
+	    this.lunch_data = null;
+	    this.dinner_data = null;
+	    this.snack_data = null;
+	  }
+
+	  _createClass(ViewMeals, [{
+	    key: 'make_base_element',
+	    value: function make_base_element() {
+	      var base_element = document.getElementById('content');
+	      base_element.innerHTML = '';
+	      return base_element;
+	    }
+	  }, {
+	    key: 'make_tables',
+	    value: function make_tables() {
+	      var base_element = this.make_base_element();
+	      var breakfastTable = this.breakfastBuilder.make_meal_table(base_element);
+	      var lunchTable = this.lunchBuilder.make_meal_table(base_element);
+	      var dinnerTable = this.dinnerBuilder.make_meal_table(base_element);
+	      var snackTable = this.snackBuilder.make_meal_table(base_element);
+	    }
+	  }, {
+	    key: 'make_page',
+	    value: function make_page(data) {
+	      this.update_data(data);
+	      this.fill_tables_with_data();
+	      this.make_calorie_goals_for_tables();
+	      this.make_stats_section_for_tables();
+	      this.make_daily_stats();
+	    }
+	  }, {
+	    key: 'update_data',
+	    value: function update_data(data) {
+	      for (var i = 0; i < data.length; i++) {
+	        var meal = data[i];
+	        this.determine_meal_type(meal);
+	      }
+	    }
+	  }, {
+	    key: 'determine_meal_type',
+	    value: function determine_meal_type(meal) {
+	      switch (meal['type']) {
+	        case 'Breakfast':
+	          this.breakfast_data = meal;
+	          break;
+	        case 'Lunch':
+	          this.lunch_data = meal;
+	          break;
+	        case 'Dinner':
+	          this.dinner_data = meal;
+	          break;
+	        case 'Snack':
+	          this.snack_data = meal;
+	          break;
+	      }
+	    }
+	  }, {
+	    key: 'fill_tables_with_data',
+	    value: function fill_tables_with_data() {
+	      this.breakfastBuilder.make_table_rows(this.breakfast_data['foods']);
+	      this.lunchBuilder.make_table_rows(this.lunch_data['foods']);
+	      this.dinnerBuilder.make_table_rows(this.dinner_data['foods']);
+	      this.snackBuilder.make_table_rows(this.snack_data['foods']);
+	    }
+	  }, {
+	    key: 'make_calorie_goals_for_tables',
+	    value: function make_calorie_goals_for_tables() {
+	      this.breakfastBuilder.make_table_goal(this.breakfast_data['goal_calories']);
+	      this.lunchBuilder.make_table_goal(this.lunch_data['goal_calories']);
+	      this.dinnerBuilder.make_table_goal(this.dinner_data['goal_calories']);
+	      this.snackBuilder.make_table_goal(this.snack_data['goal_calories']);
+	    }
+	  }, {
+	    key: 'make_stats_section_for_tables',
+	    value: function make_stats_section_for_tables() {
+	      this.breakfastBuilder.make_stats_section();
+	      this.lunchBuilder.make_stats_section();
+	      this.dinnerBuilder.make_stats_section();
+	      this.snackBuilder.make_stats_section();
+	    }
+	  }, {
+	    key: 'make_daily_stats',
+	    value: function make_daily_stats() {
+	      this.daily.make_daily_calories_table();
+	    }
+	  }]);
+
+	  return ViewMeals;
+	}();
+
+	exports.default = ViewMeals;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _food_table = __webpack_require__(3);
 
 	var _food_table2 = _interopRequireDefault(_food_table);
 
-	var _table_statistics = __webpack_require__(4);
+	var _table_statistics = __webpack_require__(5);
 
 	var _table_statistics2 = _interopRequireDefault(_table_statistics);
 
@@ -235,9 +331,11 @@
 	    value: function make_stats_section() {
 	      var table = this.table();
 	      var tbody = this.data_rows();
+
 	      var sum = this.stats.sum_table_body_rows(tbody, 1);
 	      var statsBody = this.stats.add_statistics_table_body(table);
 	      var sumRow = this.make_calorie_total(sum);
+
 	      this.stats.name_element(sumRow.children[1], "Total");
 	      var resultRow = this.make_goal_total_row(sumRow);
 	      return statsBody;
@@ -245,7 +343,10 @@
 	  }, {
 	    key: 'make_calorie_total',
 	    value: function make_calorie_total(total) {
-	      var data = { "Total Calories": total };
+	      var data = {
+	        'title': "Total Calories",
+	        'calories': total
+	      };
 	      var stats = this.stats_section();
 	      var sum = this.stats.add_statistics_table_row(stats, data);
 	      return sum;
@@ -286,16 +387,6 @@
 	      var result = goal - total || 0;
 	      return result;
 	    }
-
-	    // TO DO - Logic for daily goal
-	    // let mealGoals = document.getElementsByClassName('mealGoalCell')
-	    // let l = mealGoals.length
-	    // let sum = 0
-	    // for(let i=0; i < l; i++) {
-	    //   sum += this.stats.cell_value(mealGoals[i])
-	    // }
-
-
 	  }]);
 
 	  return MealTable;
@@ -304,7 +395,7 @@
 	exports.default = MealTable;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -315,7 +406,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _table_builder = __webpack_require__(3);
+	var _table_builder = __webpack_require__(4);
 
 	var _table_builder2 = _interopRequireDefault(_table_builder);
 
@@ -418,13 +509,7 @@
 	      var tableBody = this.data_rows();
 	      var body = this.tableBuilder.make_table_rows_with_two_columns(tableBody, data);
 	      return body;
-	      // TO DO - data will probably be an array of objects like:
-	      // { food: "Banana", calories: 100 }
-	      // If so, this method has to change!
 	    }
-
-	    // make_table_row(tBody, rowData) {
-
 	  }, {
 	    key: 'make_table_row',
 	    value: function make_table_row(rowData) {
@@ -445,7 +530,7 @@
 	exports.default = FoodTable;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -455,8 +540,6 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -543,9 +626,8 @@
 	  }, {
 	    key: 'make_table_rows_with_two_columns',
 	    value: function make_table_rows_with_two_columns(tableBody, data) {
-	      for (var key in data) {
-	        var pair = _defineProperty({}, key, data[key]);
-	        this.make_table_row_with_two_columns(tableBody, pair);
+	      for (var i = 0; i < data.length; i++) {
+	        this.make_table_row_with_two_columns(tableBody, data[i]);
 	      }
 	      return tableBody;
 	    }
@@ -566,9 +648,8 @@
 	    value: function fill_two_cell_row(row, rowData) {
 	      var cell1 = row.insertCell(0);
 	      var cell2 = row.insertCell(1);
-	      var key = Object.keys(rowData)[0];
-	      cell1.innerHTML = key;
-	      cell2.innerHTML = rowData[key];
+	      cell1.innerHTML = rowData['title'];
+	      cell2.innerHTML = rowData['calories'];
 	      return row;
 	    }
 	  }]);
@@ -579,7 +660,7 @@
 	exports.default = TableBuilder;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -590,7 +671,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _table_builder = __webpack_require__(3);
+	var _table_builder = __webpack_require__(4);
 
 	var _table_builder2 = _interopRequireDefault(_table_builder);
 
@@ -673,7 +754,7 @@
 	exports.default = TableStatistics;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -684,7 +765,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _table_builder = __webpack_require__(3);
+	var _table_builder = __webpack_require__(4);
 
 	var _table_builder2 = _interopRequireDefault(_table_builder);
 
@@ -705,7 +786,6 @@
 	  _createClass(CalorieStatsTable, [{
 	    key: 'container',
 	    value: function container() {
-	      // debugger
 	      return document.getElementById(this.idBase + 'Container');
 	    }
 	  }, {
