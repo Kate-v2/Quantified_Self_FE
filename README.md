@@ -26,6 +26,17 @@ Overall, this is a simple calorie tracker app that can be expanded for your purp
 ## Running Tests
 * There are no tests currently
 
+## Screenshots
+* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/welcome.png)
+* ![Login](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/login.png)
+* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/logout1.png)
+* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/foods1.png)
+* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/foods1.png)
+* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/meals1.png)
+* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/meals1.png)
+* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/calendar1.png)
+
+
 ## How to Contribute
 To contribute, see the setup instructions.
 * [Open Issues](https://github.com/Kate-v2/Quantified_Self_FE/projects/1)
