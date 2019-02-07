@@ -27,14 +27,22 @@ Overall, this is a simple calorie tracker app that can be expanded for your purp
 * There are no tests currently
 
 ## Screenshots
-* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/welcome.png)
-* ![Login](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/login.png)
-* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/logout1.png)
-* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/foods1.png)
-* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/foods1.png)
-* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/meals1.png)
-* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/meals1.png)
-* ![Welcome](https://github.com/Kate-v2/Quantified_Self_FE/blob/master/docs/Screenshots/calendar1.png)
+* ### Welcome Page
+  ![Welcome](https://raw.githubusercontent.com/Kate-v2/Quantified_Self_FE/master/docs/screenshots/welcome.png)
+* ### Login Button
+  ![Login](https://raw.githubusercontent.com/Kate-v2/Quantified_Self_FE/master/docs/screenshots/login.png)
+* ### Logout Button
+  ![Logout](https://raw.githubusercontent.com/Kate-v2/Quantified_Self_FE/master/docs/screenshots/logout1.png)
+* ### Foods Button
+  ![Foods Menu Button](https://raw.githubusercontent.com/Kate-v2/Quantified_Self_FE/master/docs/screenshots/foods1.png)
+* ### Foods Page
+  ![Foods Page](https://raw.githubusercontent.com/Kate-v2/Quantified_Self_FE/master/docs/screenshots/foods2.png)
+* ### Meals Button
+  * ![Meals Menu Button](https://raw.githubusercontent.com/Kate-v2/Quantified_Self_FE/master/docs/screenshots/meals1.png)
+* ### Meals Page
+  ![Meals Page](https://raw.githubusercontent.com/Kate-v2/Quantified_Self_FE/master/docs/screenshots/meals2.png)
+* ### Calendar Button
+  ![Calendar Menu Button](https://raw.githubusercontent.com/Kate-v2/Quantified_Self_FE/master/docs/screenshots/calendar1.png)
 
 
 ## How to Contribute
