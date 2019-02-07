@@ -3,8 +3,8 @@
 ## Intro
 An app to set calorie goals for the day, via goals for each meal, and track what you ate for each meal!
 
-* [Deployed App] ()
-* [Deployed API] ()
+* [Deployed App](https://kate-v2.github.io/Quantified_Self_FE/)
+* [Deployed API](https://protected-retreat-87261.herokuapp.com/)
 * [API Repo](https://github.com/RajaaBoulassouak/Quantified_Self_BE)
 
 ## Setup
@@ -36,6 +36,15 @@ To contribute, see the setup instructions.
 * Deployment is not from the Master branch, but rather the `gh-pages` branch.
 
 #### Core Unfinished Features
+- [ ] [Add Food](https://github.com/Kate-v2/Quantified_Self_FE/issues/25)
+- [ ] [Delete Food](https://github.com/Kate-v2/Quantified_Self_FE/issues/29)
+- [ ] [Update Food](https://github.com/Kate-v2/Quantified_Self_FE/issues/28)
+- [ ] [Add Meal Food](https://github.com/Kate-v2/Quantified_Self_FE/issues/15)
+- [ ] [Delete Meal Food](https://github.com/Kate-v2/Quantified_Self_FE/issues/16)
+- [ ] [Filter Food](https://github.com/Kate-v2/Quantified_Self_FE/issues/30)
+- [ ] [Change Goal Calories](https://github.com/Kate-v2/Quantified_Self_FE/issues/23)
+- [ ] [Register User](https://github.com/Kate-v2/Quantified_Self_FE/issues/11)
+- [ ] [Login User](https://github.com/Kate-v2/Quantified_Self_FE/issues/12)
 
 ## Core Contributors
 * [Kate](https://github.com/Kate-v2)
