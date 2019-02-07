@@ -50,41 +50,55 @@
 
 	var _view_meals2 = _interopRequireDefault(_view_meals);
 
+	var _food_table = __webpack_require__(3);
+
+	var _food_table2 = _interopRequireDefault(_food_table);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var viewMeals = new _view_meals2.default();
-	viewMeals.make_tables();
-	fetch(viewMeals.target).then(function (blob) {
-	  return blob.json();
-	}).then(function (data) {
-	  viewMeals.make_page(data);
-	}).catch(function (e) {
-	  console.log(e);
-	  return e;
-	});
+	var todayButton = document.getElementById('todayButton');
+	todayButton.onclick = make_meals_page();
 
-	// ---- Food ----
-	//
-	// import FoodTable from './classes/food_table.js'
-	// const foodTable = new FoodTable()
-	// let element     = foodTable.new_section()
-	// let container   = foodTable.make_specific_table(element)
-	// var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods'
-	// // target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods'
-	// get_service(foodTable, target)
-	//
-	//
-	// function get_service(model, target) {
-	//   fetch(target)
-	//     .then(blob => blob.json() )
-	//     .then(data => {
-	//       model.make_table_rows(data)
-	//     })
-	//     .catch(e => {
-	//       console.log(e);
-	//       return e;
-	//     });
-	// }
+	var foodsButton = document.getElementById('foodsButton');
+	foodsButton.onclick = make_foods_page();
+
+	function clearContainer() {
+	  var div = document.getElementById('content');
+	  div.innerHTML = '';
+	}
+
+	function make_meals_page() {
+	  clearContainer();
+	  var viewMeals = new _view_meals2.default();
+	  viewMeals.make_tables();
+	  fetch(viewMeals.target).then(function (blob) {
+	    return blob.json();
+	  }).then(function (data) {
+	    viewMeals.make_page(data);
+	  }).catch(function (e) {
+	    console.log(e);
+	    return e;
+	  });
+	}
+
+	function make_foods_page() {
+	  clearContainer();
+	  var foodTable = new _food_table2.default();
+	  var element = foodTable.new_section();
+	  var container = foodTable.make_specific_table(element);
+	  var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods';
+	  get_service(foodTable, target);
+	  function get_service(model, target) {
+	    fetch(target).then(function (blob) {
+	      return blob.json();
+	    }).then(function (data) {
+	      model.make_table_rows(data);
+	    }).catch(function (e) {
+	      console.log(e);
+	      return e;
+	    });
+	  }
+	}
 
 /***/ }),
 /* 1 */
