@@ -54,21 +54,21 @@
 
 	var _food_table2 = _interopRequireDefault(_food_table);
 
+	var _food_service = __webpack_require__(7);
+
+	var _food_service2 = _interopRequireDefault(_food_service);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	switch (document.location['pathname']) {
-	  case '/meals.html':
-	    makeMealsPage();
-	    break;
-	  case '/foods.html':
-	    makeFoodsPage();
-	    break;
-	  case '/':
-	    makeHomePage();
-	    break;
-	  case '/index.html':
-	    makeHomePage();
-	    break;
+	var path = document.location['pathname'];
+	if (path.includes('/meals.html')) {
+	  makeMealsPage();
+	}
+	if (path.includes('/foods.html')) {
+	  makeFoodsPage();
+	}
+	if (path.includes('/index.html') || path.endsWith('/')) {
+	  makeHomePage();
 	}
 
 	function clearContainer() {
@@ -97,22 +97,25 @@
 	}
 
 	function makeFoodsPage() {
-	  clearContainer();
-	  var foodTable = new _food_table2.default();
-	  var element = foodTable.new_section();
-	  var container = foodTable.make_specific_table(element);
-	  var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods';
-	  get_service(foodTable, target);
-	  function get_service(model, target) {
-	    fetch(target).then(function (blob) {
-	      return blob.json();
-	    }).then(function (data) {
-	      model.make_table_rows(data);
-	    }).catch(function (e) {
-	      console.log(e);
-	      return e;
-	    });
-	  }
+	  var service = new _food_service2.default();
+	  service.makeFoodsPage();
+	  // clearContainer()
+	  // const foodTable = new FoodTable()
+	  // let element     = foodTable.new_section()
+	  // let container   = foodTable.make_specific_table(element)
+	  // var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods'
+	  // get_service(foodTable, target)
+	  // function get_service(model, target) {
+	  //   fetch(target)
+	  //     .then(blob => blob.json() )
+	  //     .then(data => {
+	  //       model.make_table_rows(data)
+	  //     })
+	  //     .catch(e => {
+	  //       console.log(e);
+	  //       return e;
+	  //     });
+	  // }
 	}
 
 /***/ }),
@@ -948,6 +951,65 @@
 	}();
 
 	exports.default = CalorieStatsTable;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var FoodService = function () {
+	  function FoodService() {
+	    _classCallCheck(this, FoodService);
+	  }
+
+	  _createClass(FoodService, [{
+	    key: 'clearContainer',
+	    value: function clearContainer() {
+	      var div = document.getElementById('Food');
+	      div.innerHTML = '';
+	      debugger;
+	      return div;
+	    }
+	  }, {
+	    key: 'makeFoodsPage',
+	    value: function makeFoodsPage() {
+	      var foodTable = new FoodTable();
+	      var element = his.clearContainer();
+	      if (!element) {
+	        element = foodTable.new_section();
+	      }
+	      var container = foodTable.make_specific_table(element);
+	      var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods';
+	      this.get_foods(foodTable);
+	    }
+	  }, {
+	    key: 'get_foods',
+	    value: function get_foods(model) {
+	      var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods';
+	      fetch(target).then(function (blob) {
+	        return blob.json();
+	      }).then(function (data) {
+	        model.make_table_rows(data);
+	      }).catch(function (e) {
+	        console.log(e);
+	        return e;
+	      });
+	    }
+	  }]);
+
+	  return FoodService;
+	}();
+
+	exports.default = FoodService;
 
 /***/ })
 /******/ ]);
