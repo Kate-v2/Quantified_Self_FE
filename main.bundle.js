@@ -50,41 +50,70 @@
 
 	var _view_meals2 = _interopRequireDefault(_view_meals);
 
+	var _food_table = __webpack_require__(3);
+
+	var _food_table2 = _interopRequireDefault(_food_table);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var viewMeals = new _view_meals2.default();
-	viewMeals.make_tables();
-	fetch(viewMeals.target).then(function (blob) {
-	  return blob.json();
-	}).then(function (data) {
-	  viewMeals.make_page(data);
-	}).catch(function (e) {
-	  console.log(e);
-	  return e;
-	});
+	switch (document.location['pathname']) {
+	  case '/meals.html':
+	    makeMealsPage();
+	    break;
+	  case '/foods.html':
+	    makeFoodsPage();
+	    break;
+	  case '/':
+	    makeHomePage();
+	    break;
+	  case '/index.html':
+	    makeHomePage();
+	    break;
+	}
 
-	// ---- Food ----
-	//
-	// import FoodTable from './classes/food_table.js'
-	// const foodTable = new FoodTable()
-	// let element     = foodTable.new_section()
-	// let container   = foodTable.make_specific_table(element)
-	// var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods'
-	// // target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods'
-	// get_service(foodTable, target)
-	//
-	//
-	// function get_service(model, target) {
-	//   fetch(target)
-	//     .then(blob => blob.json() )
-	//     .then(data => {
-	//       model.make_table_rows(data)
-	//     })
-	//     .catch(e => {
-	//       console.log(e);
-	//       return e;
-	//     });
-	// }
+	function clearContainer() {
+	  var div = document.getElementById('content');
+	  div.innerHTML = '';
+	  return div;
+	}
+
+	function makeHomePage() {
+	  var div = clearContainer();
+	  div.innerHTML = "Welcome!";
+	}
+
+	function makeMealsPage() {
+	  clearContainer();
+	  var viewMeals = new _view_meals2.default();
+	  viewMeals.make_tables();
+	  fetch(viewMeals.target).then(function (blob) {
+	    return blob.json();
+	  }).then(function (data) {
+	    viewMeals.make_page(data);
+	  }).catch(function (e) {
+	    console.log(e);
+	    return e;
+	  });
+	}
+
+	function makeFoodsPage() {
+	  clearContainer();
+	  var foodTable = new _food_table2.default();
+	  var element = foodTable.new_section();
+	  var container = foodTable.make_specific_table(element);
+	  var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods';
+	  get_service(foodTable, target);
+	  function get_service(model, target) {
+	    fetch(target).then(function (blob) {
+	      return blob.json();
+	    }).then(function (data) {
+	      model.make_table_rows(data);
+	    }).catch(function (e) {
+	      console.log(e);
+	      return e;
+	    });
+	  }
+	}
 
 /***/ }),
 /* 1 */
