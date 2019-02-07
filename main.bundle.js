@@ -56,18 +56,33 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var todayButton = document.getElementById('todayButton');
-	todayButton.onclick = make_meals_page();
-
-	var foodsButton = document.getElementById('foodsButton');
-	foodsButton.onclick = make_foods_page();
+	switch (document.location['pathname']) {
+	  case '/meals.html':
+	    makeMealsPage();
+	    break;
+	  case '/foods.html':
+	    makeFoodsPage();
+	    break;
+	  case '/':
+	    makeHomePage();
+	    break;
+	  case '/index.html':
+	    makeHomePage();
+	    break;
+	}
 
 	function clearContainer() {
 	  var div = document.getElementById('content');
 	  div.innerHTML = '';
+	  return div;
 	}
 
-	function make_meals_page() {
+	function makeHomePage() {
+	  var div = clearContainer();
+	  div.innerHTML = "Welcome!";
+	}
+
+	function makeMealsPage() {
 	  clearContainer();
 	  var viewMeals = new _view_meals2.default();
 	  viewMeals.make_tables();
@@ -81,7 +96,7 @@
 	  });
 	}
 
-	function make_foods_page() {
+	function makeFoodsPage() {
 	  clearContainer();
 	  var foodTable = new _food_table2.default();
 	  var element = foodTable.new_section();
