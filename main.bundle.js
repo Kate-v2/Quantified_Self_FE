@@ -117,11 +117,14 @@
 	var container = foodTable.make_specific_table(element);
 	//  API REQUEST HERE
 
-	fetch('https://protected-retreat-87261.herokuapp.com/api/v1/foods').then(function (response) {
-	  if (response.ok) {
-	    return response.json();
-	  }
-	  debugger;
+	var target = 'https://protected-retreat-87261.herokuapp.com/api/v1/foods';
+	fetch(target).then(function (blob) {
+	  return blob.json();
+	}).then(function (data) {
+	  foodTable.make_table_rows(data);
+	}).catch(function (e) {
+	  console.log(e);
+	  return e;
 	});
 
 	// foodTable.make_table_rows(data)
@@ -307,8 +310,6 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var TableBuilder = function () {
@@ -394,9 +395,8 @@
 	  }, {
 	    key: 'make_table_rows_with_two_columns',
 	    value: function make_table_rows_with_two_columns(tableBody, data) {
-	      for (var key in data) {
-	        var pair = _defineProperty({}, key, data[key]);
-	        this.make_table_row_with_two_columns(tableBody, pair);
+	      for (var i = 0; i < data.length; i++) {
+	        this.make_table_row_with_two_columns(tableBody, data[i]);
 	      }
 	      return tableBody;
 	    }
@@ -417,9 +417,8 @@
 	    value: function fill_two_cell_row(row, rowData) {
 	      var cell1 = row.insertCell(0);
 	      var cell2 = row.insertCell(1);
-	      var key = Object.keys(rowData)[0];
-	      cell1.innerHTML = key;
-	      cell2.innerHTML = rowData[key];
+	      cell1.innerHTML = rowData['title'];
+	      cell2.innerHTML = rowData['calories'];
 	      return row;
 	    }
 	  }]);
@@ -544,13 +543,7 @@
 	      var tableBody = this.data_rows();
 	      var body = this.tableBuilder.make_table_rows_with_two_columns(tableBody, data);
 	      return body;
-	      // TO DO - data will probably be an array of objects like:
-	      // { food: "Banana", calories: 100 }
-	      // If so, this method has to change!
 	    }
-
-	    // make_table_row(tBody, rowData) {
-
 	  }, {
 	    key: 'make_table_row',
 	    value: function make_table_row(rowData) {
