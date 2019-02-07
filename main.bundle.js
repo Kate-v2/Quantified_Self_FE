@@ -99,7 +99,27 @@
 
 	function makeHomePage() {
 	  var div = clearContainer();
-	  div.innerHTML = "Welcome!";
+	  var welcome = document.createElement('div');
+	  welcome.id = 'welcome';
+	  document.body.appendChild(welcome);
+	  welcome.innerHTML = "<h2>Welcome!</h2>";
+	  getStarted(welcome);
+	}
+
+	function getStarted(div) {
+	  user ? instructions(div) : div.appendChild(make_new_paragraph("To get started, Login!"));
+	}
+
+	function instructions(div) {
+	  div.appendChild(make_new_paragraph("Go to Today's Meals to add foods to your daily meals"));
+	  div.appendChild(make_new_paragraph("...Or go to Foods to view all foods you've added"));
+	  div.appendChild(make_new_paragraph("...Or go to Calendar to view all your meal entries!"));
+	}
+
+	function make_new_paragraph(text) {
+	  var p = document.createElement('p');
+	  p.innerHTML = text;
+	  return p;
 	}
 
 	function makeMealsPage() {
@@ -1108,6 +1128,9 @@
 	  }, {
 	    key: 'make_foods_button',
 	    value: function make_foods_button() {
+	      if (this.path().endsWith('/foods.html')) {
+	        return;
+	      }
 	      var text = "<a href='foods.html'>Foods</a>";
 	      var button = this.generic_button(text, 'foods');
 	      return button;
@@ -1115,6 +1138,9 @@
 	  }, {
 	    key: 'make_todays_meals_button',
 	    value: function make_todays_meals_button() {
+	      if (this.path().endsWith('/meals.html')) {
+	        return;
+	      }
 	      var text = "<a href='meals.html'>Today's Meals</a>";
 	      var button = this.generic_button(text, 'today');
 	      return button;
@@ -1122,6 +1148,9 @@
 	  }, {
 	    key: 'make_calendar_button',
 	    value: function make_calendar_button() {
+	      if (this.path().endsWith('/calendar.html')) {
+	        return;
+	      }
 	      var text = "<a href='calendar.html'>Calendar</a>";
 	      var button = this.generic_button(text, 'calendar');
 	      return button;
